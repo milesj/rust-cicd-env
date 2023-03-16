@@ -3,10 +3,16 @@ mod fly;
 mod heroku;
 mod railway;
 mod render;
+mod seed;
 mod vercel;
 
 use api::*;
 use std::env;
+
+/// Returns true if in a CD environment by checking for the existence of a deploy provider environment variable.
+pub fn is_cd() -> bool {
+    !matches!(detect_cd_provider(), CdProvider::Unknown)
+}
 
 /// Detects the CD provider by checking for the existence of environment variables specific to each provider. Returns `Unknown` if no provider is detected.
 pub fn detect_cd_provider() -> CdProvider {
@@ -26,6 +32,10 @@ pub fn detect_cd_provider() -> CdProvider {
         return CdProvider::Render;
     }
 
+    if env::var("SEED_APP_NAME").is_ok() {
+        return CdProvider::Seed;
+    }
+
     if env::var("VERCEL").is_ok() {
         return CdProvider::Vercel;
     }
@@ -40,6 +50,7 @@ pub fn get_deploy_environment() -> Option<DeployEnvironment> {
         CdProvider::Heroku => heroku::create_environment(),
         CdProvider::Railway => railway::create_environment(),
         CdProvider::Render => render::create_environment(),
+        CdProvider::Seed => seed::create_environment(),
         CdProvider::Vercel => vercel::create_environment(),
         CdProvider::Unknown => {
             return None;
