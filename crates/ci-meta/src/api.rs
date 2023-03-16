@@ -44,6 +44,7 @@ pub enum CiProvider {
     Semaphore,
     TeamCity,
     TravisCI,
+    Vela,
     #[default]
     Unknown,
 }

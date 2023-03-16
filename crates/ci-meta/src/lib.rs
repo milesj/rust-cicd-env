@@ -25,6 +25,7 @@ mod jenkins_x;
 mod netlify;
 mod semaphore;
 mod travisci;
+mod vela;
 
 pub use api::{CiEnvironment, CiOutput, CiProvider};
 use std::env;
@@ -144,6 +145,10 @@ pub fn detect_ci_provider() -> CiProvider {
         return CiProvider::TravisCI;
     }
 
+    if env::var("VELA").is_ok() {
+        return CiProvider::Vela;
+    }
+
     CiProvider::Unknown
 }
 
@@ -183,6 +188,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
             return None;
         }
         CiProvider::TravisCI => travisci::create_environment(),
+        CiProvider::Vela => vela::create_environment(),
         CiProvider::Unknown => {
             return None;
         }
