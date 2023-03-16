@@ -1,5 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
+// https://codefresh.io/docs/docs/pipelines/variables/
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("CF_PULL_REQUEST_TARGET").or_else(|| opt_var("CF_BASE_BRANCH")),

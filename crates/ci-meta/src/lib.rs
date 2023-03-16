@@ -13,6 +13,7 @@ mod buildkite;
 mod circleci;
 mod cirrus;
 mod codefresh;
+mod codemagic;
 mod codeship;
 mod drone;
 mod github;
@@ -85,6 +86,10 @@ pub fn detect_ci_provider() -> CiProvider {
         return CiProvider::Codefresh;
     }
 
+    if env::var("CM_BUILD_ID").is_ok() {
+        return CiProvider::Codemagic;
+    }
+
     if let Ok(var) = env::var("CI_NAME") {
         if var == "codeship" {
             return CiProvider::Codeship;
@@ -138,6 +143,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::CircleCI => circleci::create_environment(),
         CiProvider::Cirrus => cirrus::create_environment(),
         CiProvider::Codefresh => codefresh::create_environment(),
+        CiProvider::Codemagic => codemagic::create_environment(),
         CiProvider::Codeship => codeship::create_environment(),
         CiProvider::Drone => drone::create_environment(),
         CiProvider::GithubActions => github::create_environment(),
