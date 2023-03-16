@@ -18,6 +18,7 @@ impl Default for CiOutput {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CiProvider {
     Agola,
+    AppCenter,
     AppVeyor,
     AwsCodebuild,
     Bitbucket,

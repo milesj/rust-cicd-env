@@ -1,5 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
+// https://agola.io/doc/config/reference.html#agola-provided-environment-variables
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: None,
