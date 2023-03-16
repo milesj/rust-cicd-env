@@ -5,6 +5,7 @@ use std::env;
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CdProvider {
     Heroku,
+    Railway,
     Render,
     #[default]
     Unknown,

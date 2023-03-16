@@ -1,5 +1,6 @@
 mod api;
 mod heroku;
+mod railway;
 mod render;
 
 use api::*;
@@ -9,6 +10,10 @@ use std::env;
 pub fn detect_cd_provider() -> CdProvider {
     if env::var("HEROKU_APP_ID").is_ok() || env::var("DYNO").is_ok() {
         return CdProvider::Heroku;
+    }
+
+    if env::var("RAILWAY_STATIC_URL").is_ok() {
+        return CdProvider::Railway;
     }
 
     if env::var("RENDER").is_ok() {
@@ -22,6 +27,7 @@ pub fn detect_cd_provider() -> CdProvider {
 pub fn get_deploy_environment() -> Option<DeployEnvironment> {
     let environment = match detect_cd_provider() {
         CdProvider::Heroku => heroku::create_environment(),
+        CdProvider::Railway => railway::create_environment(),
         CdProvider::Render => render::create_environment(),
         CdProvider::Unknown => {
             return None;
