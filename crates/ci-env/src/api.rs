@@ -1,20 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::env;
 
-pub struct CiOutput {
-    pub close_log_group: &'static str,
-    pub open_log_group: &'static str,
-}
-
-impl Default for CiOutput {
-    fn default() -> Self {
-        CiOutput {
-            close_log_group: "",
-            open_log_group: "▪▪▪▪ ",
-        }
-    }
-}
-
+/// List of supported CI providers.
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CiProvider {
     Agola,
@@ -50,12 +37,20 @@ pub enum CiProvider {
     Unknown,
 }
 
+pub struct CiOutput {
+    /// Denotes the closing of a log group.
+    pub close_log_group: &'static str,
+
+    /// Denotes the opening of a log group.
+    pub open_log_group: &'static str,
+}
+
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct CiEnvironment {
-    /// Base branch of the pull/merge request.
+    /// Target branch of the pull/merge request.
     pub base_branch: Option<String>,
 
-    /// Branch of the triggered pipeline.
+    /// Source branch that triggered the pipeline.
     pub branch: String,
 
     /// Unique ID of the current pipeline.
@@ -70,7 +65,7 @@ pub struct CiEnvironment {
     /// Link to the pull/merge request.
     pub request_url: Option<String>,
 
-    /// Revision that triggered the pipeline.
+    /// Revision (commit, sha, etc) that triggered the pipeline.
     pub revision: String,
 
     /// Link to the pipeline.
