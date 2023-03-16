@@ -8,6 +8,7 @@ pub enum CdProvider {
     Heroku,
     Railway,
     Render,
+    Vercel,
     #[default]
     Unknown,
 }
