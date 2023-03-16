@@ -2,7 +2,7 @@
 
 ![Crates.io](https://img.shields.io/crates/v/ci_env) ![Crates.io](https://img.shields.io/crates/d/ci_env)
 
-Detects CI information from the current environment.
+Detects CI (continuous integration) information from the current environment.
 
 ### Usage
 
@@ -15,15 +15,15 @@ ci_env::is_ci();
 Or detect which CI provider is being used.
 
 ```rust
-ci_env::detect_ci_provider(); // GithubActions
+ci_env::detect_provider(); // GithubActions
 ```
 
 And most importantly, extract information about the CI environment and CI provider. This includes branch, commit, and pull request information.
 
 ```rust
-use ci_env::get_ci_environment;
+use ci_env::get_environment;
 
-if let Some(ci) = get_ci_environment() {
+if let Some(ci) = get_environment() {
 	println!("Provider: {:?}", ci.provider);
 	println!("Branch: {}", ci.branch);
 	println!("Commit: {}", ci.revision);
