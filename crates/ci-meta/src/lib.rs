@@ -7,6 +7,7 @@ mod aws_codebuild;
 mod azure;
 mod bamboo;
 mod bitbucket;
+mod bitrise;
 mod buildkite;
 mod circleci;
 mod codefresh;
@@ -56,6 +57,10 @@ pub fn detect_ci_provider() -> CiProvider {
 
     if env::var("BITBUCKET_WORKSPACE").is_ok() {
         return CiProvider::Bitbucket;
+    }
+
+    if env::var("BITRISE_IO").is_ok() {
+        return CiProvider::Bitrise;
     }
 
     if env::var("BUILDKITE").is_ok() {
@@ -117,6 +122,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::Azure => azure::create_environment(),
         CiProvider::Bamboo => bamboo::create_environment(),
         CiProvider::Bitbucket => bitbucket::create_environment(),
+        CiProvider::Bitrise => bitrise::create_environment(),
         CiProvider::Buildkite => buildkite::create_environment(),
         CiProvider::CircleCI => circleci::create_environment(),
         CiProvider::Codefresh => codefresh::create_environment(),

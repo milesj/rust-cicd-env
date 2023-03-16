@@ -25,6 +25,7 @@ pub enum CiProvider {
     Azure,
     Bamboo,
     Bitbucket,
+    Bitrise,
     Buildkite,
     CircleCI,
     Codefresh,
