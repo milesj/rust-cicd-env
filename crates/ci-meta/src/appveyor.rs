@@ -1,5 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
+// https://www.appveyor.com/docs/environment-variables/
 pub fn create_environment() -> CiEnvironment {
     let base_branch;
     let branch;

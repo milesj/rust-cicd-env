@@ -19,6 +19,7 @@ impl Default for CiOutput {
 pub enum CiProvider {
     Agola,
     AppCenter,
+    Appcircle,
     AppVeyor,
     AwsCodebuild,
     Bitbucket,

@@ -1,6 +1,7 @@
 mod agola;
 mod api;
 mod appcenter;
+mod appcircle;
 mod appveyor;
 mod aws_codebuild;
 mod bitbucket;
@@ -29,6 +30,10 @@ pub fn detect_ci_provider() -> CiProvider {
 
     if env::var("APPCENTER_BUILD_ID").is_ok() {
         return CiProvider::AppCenter;
+    }
+
+    if env::var("AC_APPCIRCLE").is_ok() {
+        return CiProvider::Appcircle;
     }
 
     if env::var("APPVEYOR").is_ok() {
@@ -96,6 +101,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
     let environment = match detect_ci_provider() {
         CiProvider::Agola => agola::create_environment(),
         CiProvider::AppCenter => appcenter::create_environment(),
+        CiProvider::Appcircle => appcircle::create_environment(),
         CiProvider::AppVeyor => appveyor::create_environment(),
         CiProvider::AwsCodebuild => aws_codebuild::create_environment(),
         CiProvider::Bitbucket => bitbucket::create_environment(),
