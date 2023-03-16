@@ -5,6 +5,7 @@ mod appcircle;
 mod appveyor;
 mod aws_codebuild;
 mod azure;
+mod bamboo;
 mod bitbucket;
 mod buildkite;
 mod circleci;
@@ -41,12 +42,16 @@ pub fn detect_ci_provider() -> CiProvider {
         return CiProvider::AppVeyor;
     }
 
+    if env::var("CODEBUILD_BUILD_ARN").is_ok() {
+        return CiProvider::AwsCodebuild;
+    }
+
     if env::var("BUILD_BUILDID").is_ok() {
         return CiProvider::Azure;
     }
 
-    if env::var("CODEBUILD_BUILD_ARN").is_ok() {
-        return CiProvider::AwsCodebuild;
+    if env::var("bamboo_planKey").is_ok() {
+        return CiProvider::Bamboo;
     }
 
     if env::var("BITBUCKET_WORKSPACE").is_ok() {
@@ -110,6 +115,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::AppVeyor => appveyor::create_environment(),
         CiProvider::AwsCodebuild => aws_codebuild::create_environment(),
         CiProvider::Azure => azure::create_environment(),
+        CiProvider::Bamboo => bamboo::create_environment(),
         CiProvider::Bitbucket => bitbucket::create_environment(),
         CiProvider::Buildkite => buildkite::create_environment(),
         CiProvider::CircleCI => circleci::create_environment(),

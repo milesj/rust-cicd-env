@@ -23,6 +23,7 @@ pub enum CiProvider {
     AppVeyor,
     AwsCodebuild,
     Azure,
+    Bamboo,
     Bitbucket,
     Buildkite,
     CircleCI,
