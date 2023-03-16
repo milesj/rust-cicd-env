@@ -7,6 +7,7 @@ pub enum CdProvider {
     AwsCodedeploy,
     DigitalOceanAppPlatform,
     Fly,
+    GoogleAppEngine,
     Heroku,
     Railway,
     Render,
