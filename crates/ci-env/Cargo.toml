@@ -2,6 +2,12 @@
 name = "ci_env"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "Detect CI information from the environment."
+homepage = "https://github.com/milesj/rust-cicd-env"
+repository = "https://github.com/milesj/rust-cicd-env"
+keywords = ["ci", "env", "info", "provider"]
+categories = ["development-tools"]
 
 [dependencies]
 serde = { version = "1.0.155", features = ["derive"] }
