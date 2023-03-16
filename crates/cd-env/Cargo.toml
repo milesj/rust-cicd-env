@@ -6,7 +6,7 @@ license = "MIT"
 description = "Detect CD (deploy, deliver, distribute) information from the environment."
 homepage = "https://github.com/milesj/rust-cicd-env"
 repository = "https://github.com/milesj/rust-cicd-env"
-keywords = ["cd", "deploy", "deliver", "env", "info", "provider"]
+keywords = ["cd", "deploy", "deliver", "dist", "env", "info", "provider"]
 categories = ["development-tools"]
 
 [dependencies]

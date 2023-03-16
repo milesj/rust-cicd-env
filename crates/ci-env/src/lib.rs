@@ -37,7 +37,7 @@ pub fn is_ci() -> bool {
 }
 
 /// Detects the CI provider by checking for the existence of environment variables specific to each provider. Returns `Unknown` if no provider is detected.
-pub fn detect_ci_provider() -> CiProvider {
+pub fn detect_provider() -> CiProvider {
     if env::var("AGOLA_REPOSITORY_URL").is_ok() {
         return CiProvider::Agola;
     }
@@ -162,12 +162,12 @@ pub fn detect_ci_provider() -> CiProvider {
 }
 
 /// Returns metadata and information about the current CI environment and CI provider.
-pub fn get_ci_environment() -> Option<CiEnvironment> {
+pub fn get_environment() -> Option<CiEnvironment> {
     if !is_ci() {
         return None;
     }
 
-    let environment = match detect_ci_provider() {
+    let environment = match detect_provider() {
         CiProvider::Agola => agola::create_environment(),
         CiProvider::AppCenter => appcenter::create_environment(),
         CiProvider::Appcircle => appcircle::create_environment(),
@@ -209,8 +209,8 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
 }
 
 /// Returns the output format for the current CI provider.
-pub fn get_ci_output() -> Option<CiOutput> {
-    match detect_ci_provider() {
+pub fn get_output() -> Option<CiOutput> {
+    match detect_provider() {
         CiProvider::Buildkite => Some(buildkite::BUILDKITE_OUTPUT),
         CiProvider::GithubActions => Some(github::GITHUB_OUTPUT),
         _ => None,
