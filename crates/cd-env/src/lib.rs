@@ -1,4 +1,5 @@
 mod api;
+mod aws_codedeploy;
 mod digital_ocean;
 mod fly;
 mod heroku;
@@ -17,6 +18,10 @@ pub fn is_cd() -> bool {
 
 /// Detects the CD provider by checking for the existence of environment variables specific to each provider. Returns `Unknown` if no provider is detected.
 pub fn detect_cd_provider() -> CdProvider {
+    if env::var("DEPLOYMENT_GROUP_NAME").is_ok() {
+        return CdProvider::AwsCodedeploy;
+    }
+
     // Not sure if correct...
     if env::var("COMMIT_HASH").is_ok() && env::var("PUBLIC_URL").is_ok() {
         return CdProvider::DigitalOceanAppPlatform;
@@ -52,6 +57,7 @@ pub fn detect_cd_provider() -> CdProvider {
 /// Returns metadata and information about the current deploy environment and CD provider.
 pub fn get_deploy_environment() -> Option<DeployEnvironment> {
     let environment = match detect_cd_provider() {
+        CdProvider::AwsCodedeploy => aws_codedeploy::create_environment(),
         CdProvider::DigitalOceanAppPlatform => digital_ocean::create_environment(),
         CdProvider::Fly => fly::create_environment(),
         CdProvider::Heroku => heroku::create_environment(),
