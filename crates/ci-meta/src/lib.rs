@@ -20,6 +20,7 @@ mod github;
 mod gitlab;
 mod google_cloud_build;
 mod heroku;
+mod jenkins;
 mod semaphore;
 mod travisci;
 
@@ -117,6 +118,10 @@ pub fn detect_ci_provider() -> CiProvider {
         return CiProvider::Heroku;
     }
 
+    if env::var("JENKINS_URL").is_ok() {
+        return CiProvider::Jenkins;
+    }
+
     if env::var("SEMAPHORE").is_ok() {
         return CiProvider::Semaphore;
     }
@@ -155,6 +160,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::Gitlab => gitlab::create_environment(),
         CiProvider::GoogleCloudBuild => google_cloud_build::create_environment(),
         CiProvider::Heroku => heroku::create_environment(),
+        CiProvider::Jenkins => jenkins::create_environment(),
         CiProvider::Semaphore => semaphore::create_environment(),
         CiProvider::TravisCI => travisci::create_environment(),
         CiProvider::Unknown => {
