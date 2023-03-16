@@ -136,6 +136,10 @@ pub fn detect_ci_provider() -> CiProvider {
         return CiProvider::Semaphore;
     }
 
+    if env::var("TEAMCITY_VERSION").is_ok() {
+        return CiProvider::TeamCity;
+    }
+
     if env::var("TRAVIS").is_ok() {
         return CiProvider::TravisCI;
     }
@@ -174,6 +178,10 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::JenkinsX => jenkins_x::create_environment(),
         CiProvider::Netlify => netlify::create_environment(),
         CiProvider::Semaphore => semaphore::create_environment(),
+        CiProvider::TeamCity => {
+            // No env vars to use
+            return None;
+        }
         CiProvider::TravisCI => travisci::create_environment(),
         CiProvider::Unknown => {
             return None;

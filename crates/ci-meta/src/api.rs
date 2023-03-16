@@ -42,6 +42,7 @@ pub enum CiProvider {
     JenkinsX,
     Netlify,
     Semaphore,
+    TeamCity,
     TravisCI,
     #[default]
     Unknown,
