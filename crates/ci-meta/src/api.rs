@@ -39,6 +39,7 @@ pub enum CiProvider {
     GoogleCloudBuild,
     Heroku,
     Jenkins,
+    JenkinsX,
     Semaphore,
     TravisCI,
     #[default]

@@ -12,6 +12,6 @@ pub fn create_environment() -> CiEnvironment {
         request_id: opt_var("CHANGE_ID"),
         request_url: None,
         revision: var("GIT_COMMIT"),
-        url: opt_var("BUILD_URL"),
+        url: opt_var("JENKINS_URL"),
     }
 }
