@@ -11,6 +11,7 @@ mod bitrise;
 mod buddy;
 mod buildkite;
 mod circleci;
+mod cirrus;
 mod codefresh;
 mod codeship;
 mod drone;
@@ -76,6 +77,10 @@ pub fn detect_ci_provider() -> CiProvider {
         return CiProvider::CircleCI;
     }
 
+    if env::var("CIRRUS_CI").is_ok() {
+        return CiProvider::Cirrus;
+    }
+
     if env::var("CF_ACCOUNT").is_ok() {
         return CiProvider::Codefresh;
     }
@@ -131,6 +136,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::Buddy => buddy::create_environment(),
         CiProvider::Buildkite => buildkite::create_environment(),
         CiProvider::CircleCI => circleci::create_environment(),
+        CiProvider::Cirrus => cirrus::create_environment(),
         CiProvider::Codefresh => codefresh::create_environment(),
         CiProvider::Codeship => codeship::create_environment(),
         CiProvider::Drone => drone::create_environment(),

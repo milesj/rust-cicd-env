@@ -6,6 +6,7 @@ pub const BUILDKITE_OUTPUT: CiOutput = CiOutput {
     open_log_group: "--- ",
 };
 
+// https://buildkite.com/docs/pipelines/environment-variables
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("BUILDKITE_PULL_REQUEST_BASE_BRANCH"),

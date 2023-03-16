@@ -29,6 +29,7 @@ pub enum CiProvider {
     Buddy,
     Buildkite,
     CircleCI,
+    Cirrus,
     Codefresh,
     Codeship,
     Drone,
