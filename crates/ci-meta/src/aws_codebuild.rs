@@ -1,5 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
+// https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-env-vars.html
 pub fn create_environment() -> CiEnvironment {
     let trigger = opt_var("CODEBUILD_WEBHOOK_TRIGGER");
 

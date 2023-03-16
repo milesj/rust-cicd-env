@@ -4,6 +4,7 @@ mod appcenter;
 mod appcircle;
 mod appveyor;
 mod aws_codebuild;
+mod azure;
 mod bitbucket;
 mod buildkite;
 mod circleci;
@@ -38,6 +39,10 @@ pub fn detect_ci_provider() -> CiProvider {
 
     if env::var("APPVEYOR").is_ok() {
         return CiProvider::AppVeyor;
+    }
+
+    if env::var("BUILD_BUILDID").is_ok() {
+        return CiProvider::Azure;
     }
 
     if env::var("CODEBUILD_BUILD_ARN").is_ok() {
@@ -104,6 +109,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::Appcircle => appcircle::create_environment(),
         CiProvider::AppVeyor => appveyor::create_environment(),
         CiProvider::AwsCodebuild => aws_codebuild::create_environment(),
+        CiProvider::Azure => azure::create_environment(),
         CiProvider::Bitbucket => bitbucket::create_environment(),
         CiProvider::Buildkite => buildkite::create_environment(),
         CiProvider::CircleCI => circleci::create_environment(),
