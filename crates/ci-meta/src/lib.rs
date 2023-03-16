@@ -22,6 +22,7 @@ mod google_cloud_build;
 mod heroku;
 mod jenkins;
 mod jenkins_x;
+mod netlify;
 mod semaphore;
 mod travisci;
 
@@ -127,6 +128,10 @@ pub fn detect_ci_provider() -> CiProvider {
         return CiProvider::JenkinsX;
     }
 
+    if env::var("NETLIFY").is_ok() {
+        return CiProvider::Netlify;
+    }
+
     if env::var("SEMAPHORE").is_ok() {
         return CiProvider::Semaphore;
     }
@@ -167,6 +172,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::Heroku => heroku::create_environment(),
         CiProvider::Jenkins => jenkins::create_environment(),
         CiProvider::JenkinsX => jenkins_x::create_environment(),
+        CiProvider::Netlify => netlify::create_environment(),
         CiProvider::Semaphore => semaphore::create_environment(),
         CiProvider::TravisCI => travisci::create_environment(),
         CiProvider::Unknown => {

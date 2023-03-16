@@ -40,6 +40,7 @@ pub enum CiProvider {
     Heroku,
     Jenkins,
     JenkinsX,
+    Netlify,
     Semaphore,
     TravisCI,
     #[default]
