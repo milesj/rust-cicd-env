@@ -1,5 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
+// https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
 pub fn create_environment() -> CiEnvironment {
     let base_branch = opt_var("CI_MERGE_REQUEST_TARGET_BRANCH_NAME")
         .or_else(|| opt_var("CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME"));

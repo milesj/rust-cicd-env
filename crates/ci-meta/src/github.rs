@@ -6,10 +6,11 @@ pub const GITHUB_OUTPUT: CiOutput = CiOutput {
     open_log_group: "::group::",
 };
 
-// GITHUB_HEAD_SHA and GITHUB_PULL_REQUEST are non-standard
+// https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
 pub fn create_environment() -> CiEnvironment {
     let ref_path = var("GITHUB_REF");
 
+    // GITHUB_HEAD_SHA and GITHUB_PULL_REQUEST are non-standard
     CiEnvironment {
         base_branch: opt_var("GITHUB_BASE_REF"),
         branch: opt_var("GITHUB_HEAD_REF")
