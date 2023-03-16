@@ -1,8 +1,8 @@
-use crate::api::{opt_var, var, CdProvider, DeployEnvironment};
+use crate::api::{opt_var, var, CdEnvironment, CdProvider};
 
 // https://docs.digitalocean.com/products/app-platform/how-to/use-environment-variables/
-pub fn create_environment() -> DeployEnvironment {
-    DeployEnvironment {
+pub fn create_environment() -> CdEnvironment {
+    CdEnvironment {
         branch: None,
         provider: CdProvider::DigitalOceanAppPlatform,
         revision: var("COMMIT_HASH"),

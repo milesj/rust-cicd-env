@@ -21,7 +21,7 @@ pub enum CdProvider {
 
 // Other fields to maybe track: environment, url, deploy ID
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct DeployEnvironment {
+pub struct CdEnvironment {
     /// Source branch that was deployed.
     pub branch: Option<String>,
 

@@ -16,11 +16,11 @@ use std::env;
 
 /// Returns true if in a CD environment by checking for the existence of a deploy provider environment variable.
 pub fn is_cd() -> bool {
-    !matches!(detect_cd_provider(), CdProvider::Unknown)
+    !matches!(detect_provider(), CdProvider::Unknown)
 }
 
 /// Detects the CD provider by checking for the existence of environment variables specific to each provider. Returns `Unknown` if no provider is detected.
-pub fn detect_cd_provider() -> CdProvider {
+pub fn detect_provider() -> CdProvider {
     if env::var("DEPLOYMENT_GROUP_NAME").is_ok() {
         return CdProvider::AwsCodedeploy;
     }
@@ -70,8 +70,8 @@ pub fn detect_cd_provider() -> CdProvider {
 }
 
 /// Returns metadata and information about the current deploy environment and CD provider.
-pub fn get_deploy_environment() -> Option<DeployEnvironment> {
-    let environment = match detect_cd_provider() {
+pub fn get_environment() -> Option<CdEnvironment> {
+    let environment = match detect_provider() {
         CdProvider::AwsCodedeploy => aws_codedeploy::create_environment(),
         CdProvider::DigitalOceanAppPlatform => digital_ocean::create_environment(),
         CdProvider::Fly => fly::create_environment(),

@@ -1,8 +1,8 @@
-use crate::api::{opt_var, var, CdProvider, DeployEnvironment};
+use crate::api::{opt_var, var, CdEnvironment, CdProvider};
 
 // https://cloud.google.com/run/docs/container-contract
-pub fn create_environment() -> DeployEnvironment {
-    DeployEnvironment {
+pub fn create_environment() -> CdEnvironment {
+    CdEnvironment {
         branch: None,
         provider: CdProvider::GoogleCloudRun,
         revision: var("K_REVISION"),

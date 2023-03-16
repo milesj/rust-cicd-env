@@ -1,8 +1,8 @@
-use crate::api::{opt_var, var, CdProvider, DeployEnvironment};
+use crate::api::{opt_var, var, CdEnvironment, CdProvider};
 
 // https://devcenter.heroku.com/articles/dyno-metadata
-pub fn create_environment() -> DeployEnvironment {
-    DeployEnvironment {
+pub fn create_environment() -> CdEnvironment {
+    CdEnvironment {
         branch: None,
         provider: CdProvider::Heroku,
         revision: var("HEROKU_SLUG_COMMIT"),
