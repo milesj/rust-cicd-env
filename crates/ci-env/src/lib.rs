@@ -161,7 +161,7 @@ pub fn detect_ci_provider() -> CiProvider {
     CiProvider::Unknown
 }
 
-/// Returns metadata and information about the current CI environmen and CI provider.
+/// Returns metadata and information about the current CI environment and CI provider.
 pub fn get_ci_environment() -> Option<CiEnvironment> {
     if !is_ci() {
         return None;
