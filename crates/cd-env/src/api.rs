@@ -8,6 +8,7 @@ pub enum CdProvider {
     DigitalOceanAppPlatform,
     Fly,
     GoogleAppEngine,
+    GoogleCloudRun,
     Heroku,
     Railway,
     Render,
