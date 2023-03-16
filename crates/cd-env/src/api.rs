@@ -13,6 +13,7 @@ pub enum CdProvider {
     Unknown,
 }
 
+// Other fields to maybe track: environment, url, deploy ID
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct DeployEnvironment {
     /// Source branch that was deployed.
