@@ -10,6 +10,7 @@ pub enum CdProvider {
     GoogleAppEngine,
     GoogleCloudRun,
     Heroku,
+    Octopus,
     Railway,
     Render,
     Seed,

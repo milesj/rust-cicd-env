@@ -5,6 +5,7 @@ mod fly;
 mod google_appengine;
 mod google_cloud_run;
 mod heroku;
+mod octopus;
 mod railway;
 mod render;
 mod seed;
@@ -45,6 +46,10 @@ pub fn detect_cd_provider() -> CdProvider {
         return CdProvider::Heroku;
     }
 
+    if env::var("OCTOPUS_RELEASE_ID").is_ok() {
+        return CdProvider::Octopus;
+    }
+
     if env::var("RAILWAY_STATIC_URL").is_ok() {
         return CdProvider::Railway;
     }
@@ -73,6 +78,7 @@ pub fn get_deploy_environment() -> Option<DeployEnvironment> {
         CdProvider::GoogleAppEngine => google_appengine::create_environment(),
         CdProvider::GoogleCloudRun => google_cloud_run::create_environment(),
         CdProvider::Heroku => heroku::create_environment(),
+        CdProvider::Octopus => octopus::create_environment(),
         CdProvider::Railway => railway::create_environment(),
         CdProvider::Render => render::create_environment(),
         CdProvider::Seed => seed::create_environment(),
