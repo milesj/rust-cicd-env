@@ -4,6 +4,7 @@ use std::env;
 /// List of supported CD providers.
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CdProvider {
+    Fly,
     Heroku,
     Railway,
     Render,
