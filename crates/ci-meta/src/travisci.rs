@@ -1,5 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
+// https://docs.travis-ci.com/user/environment-variables/#default-environment-variables
 pub fn create_environment() -> CiEnvironment {
     let base_branch;
     let branch;

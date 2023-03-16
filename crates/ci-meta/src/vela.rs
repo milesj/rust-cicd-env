@@ -1,6 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
-// https://www.jenkins.io/doc/book/pipeline/jenkinsfile/#using-environment-variables
+// https://go-vela.github.io/docs/reference/environment/variables/
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("VELA_PULL_REQUEST_TARGET"),

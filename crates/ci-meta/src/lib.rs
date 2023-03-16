@@ -26,6 +26,7 @@ mod netlify;
 mod semaphore;
 mod travisci;
 mod vela;
+mod woodpecker;
 
 pub use api::{CiEnvironment, CiOutput, CiProvider};
 use std::env;
@@ -93,6 +94,12 @@ pub fn detect_ci_provider() -> CiProvider {
 
     if env::var("CM_BUILD_ID").is_ok() {
         return CiProvider::Codemagic;
+    }
+
+    if let Ok(var) = env::var("CI") {
+        if var == "woodpecker" {
+            return CiProvider::Woodpecker;
+        }
     }
 
     if let Ok(var) = env::var("CI_NAME") {
@@ -189,6 +196,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         }
         CiProvider::TravisCI => travisci::create_environment(),
         CiProvider::Vela => vela::create_environment(),
+        CiProvider::Woodpecker => woodpecker::create_environment(),
         CiProvider::Unknown => {
             return None;
         }

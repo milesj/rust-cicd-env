@@ -1,6 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
-// https://www.jenkins.io/doc/book/pipeline/jenkinsfile/#using-environment-variables
+// https://docs.netlify.com/configure-builds/environment-variables/
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: None,

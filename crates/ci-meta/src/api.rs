@@ -45,6 +45,7 @@ pub enum CiProvider {
     TeamCity,
     TravisCI,
     Vela,
+    Woodpecker,
     #[default]
     Unknown,
 }
