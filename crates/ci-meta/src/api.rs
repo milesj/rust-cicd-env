@@ -26,6 +26,7 @@ pub enum CiProvider {
     Bamboo,
     Bitbucket,
     Bitrise,
+    Buddy,
     Buildkite,
     CircleCI,
     Codefresh,

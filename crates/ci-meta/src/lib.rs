@@ -8,6 +8,7 @@ mod azure;
 mod bamboo;
 mod bitbucket;
 mod bitrise;
+mod buddy;
 mod buildkite;
 mod circleci;
 mod codefresh;
@@ -61,6 +62,10 @@ pub fn detect_ci_provider() -> CiProvider {
 
     if env::var("BITRISE_IO").is_ok() {
         return CiProvider::Bitrise;
+    }
+
+    if env::var("BUDDY").is_ok() {
+        return CiProvider::Buddy;
     }
 
     if env::var("BUILDKITE").is_ok() {
@@ -123,6 +128,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::Bamboo => bamboo::create_environment(),
         CiProvider::Bitbucket => bitbucket::create_environment(),
         CiProvider::Bitrise => bitrise::create_environment(),
+        CiProvider::Buddy => buddy::create_environment(),
         CiProvider::Buildkite => buildkite::create_environment(),
         CiProvider::CircleCI => circleci::create_environment(),
         CiProvider::Codefresh => codefresh::create_environment(),
