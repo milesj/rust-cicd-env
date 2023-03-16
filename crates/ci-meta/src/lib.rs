@@ -19,6 +19,7 @@ mod drone;
 mod github;
 mod gitlab;
 mod google_cloud_build;
+mod heroku;
 mod semaphore;
 mod travisci;
 
@@ -112,6 +113,10 @@ pub fn detect_ci_provider() -> CiProvider {
         return CiProvider::GoogleCloudBuild;
     }
 
+    if env::var("HEROKU_TEST_RUN_ID").is_ok() {
+        return CiProvider::Heroku;
+    }
+
     if env::var("SEMAPHORE").is_ok() {
         return CiProvider::Semaphore;
     }
@@ -149,6 +154,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
         CiProvider::GithubActions => github::create_environment(),
         CiProvider::Gitlab => gitlab::create_environment(),
         CiProvider::GoogleCloudBuild => google_cloud_build::create_environment(),
+        CiProvider::Heroku => heroku::create_environment(),
         CiProvider::Semaphore => semaphore::create_environment(),
         CiProvider::TravisCI => travisci::create_environment(),
         CiProvider::Unknown => {
