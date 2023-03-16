@@ -11,7 +11,7 @@ mod render;
 mod seed;
 mod vercel;
 
-use api::*;
+pub use api::*;
 use std::env;
 
 /// Returns true if in a CD environment by checking for the existence of a deploy provider environment variable.
