@@ -1,3 +1,4 @@
+mod agola;
 mod api;
 mod appveyor;
 mod aws_codebuild;
@@ -21,6 +22,10 @@ pub fn is_ci() -> bool {
 }
 
 pub fn detect_ci_provider() -> CiProvider {
+    if env::var("AGOLA_REPOSITORY_URL").is_ok() {
+        return CiProvider::Agola;
+    }
+
     if env::var("APPVEYOR").is_ok() {
         return CiProvider::AppVeyor;
     }
@@ -84,6 +89,7 @@ pub fn get_ci_environment() -> Option<CiEnvironment> {
     }
 
     let environment = match detect_ci_provider() {
+        CiProvider::Agola => agola::create_environment(),
         CiProvider::AppVeyor => appveyor::create_environment(),
         CiProvider::AwsCodebuild => aws_codebuild::create_environment(),
         CiProvider::Bitbucket => bitbucket::create_environment(),
