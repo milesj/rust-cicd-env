@@ -4,6 +4,7 @@ use std::env;
 /// List of supported CD providers.
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CdProvider {
+    Heroku,
     Render,
     #[default]
     Unknown,
@@ -12,7 +13,7 @@ pub enum CdProvider {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct DeployEnvironment {
     /// Source branch that was deployed.
-    pub branch: String,
+    pub branch: Option<String>,
 
     /// Name of the provider.
     pub provider: CdProvider,
