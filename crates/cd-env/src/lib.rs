@@ -2,8 +2,10 @@ mod api;
 mod aws_codedeploy;
 mod digital_ocean;
 mod fly;
+mod go_cd;
 mod google_appengine;
 mod google_cloud_run;
+mod harness;
 mod heroku;
 mod octopus;
 mod railway;
@@ -34,12 +36,20 @@ pub fn detect_provider() -> CdProvider {
         return CdProvider::Fly;
     }
 
+    if env::var("GO_PIPELINE_NAME").is_ok() {
+        return CdProvider::GoCD;
+    }
+
     if env::var("GAE_SERVICE").is_ok() {
         return CdProvider::GoogleAppEngine;
     }
 
     if env::var("K_SERVICE").is_ok() || env::var("CLOUD_RUN_JOB").is_ok() {
         return CdProvider::GoogleCloudRun;
+    }
+
+    if env::var("HARNESS_BUILD_ID").is_ok() {
+        return CdProvider::Harness;
     }
 
     if env::var("HEROKU_APP_ID").is_ok() || env::var("DYNO").is_ok() {
@@ -75,8 +85,10 @@ pub fn get_environment() -> Option<CdEnvironment> {
         CdProvider::AwsCodedeploy => aws_codedeploy::create_environment(),
         CdProvider::DigitalOceanAppPlatform => digital_ocean::create_environment(),
         CdProvider::Fly => fly::create_environment(),
+        CdProvider::GoCD => go_cd::create_environment(),
         CdProvider::GoogleAppEngine => google_appengine::create_environment(),
         CdProvider::GoogleCloudRun => google_cloud_run::create_environment(),
+        CdProvider::Harness => harness::create_environment(),
         CdProvider::Heroku => heroku::create_environment(),
         CdProvider::Octopus => octopus::create_environment(),
         CdProvider::Railway => railway::create_environment(),

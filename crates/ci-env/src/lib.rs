@@ -19,24 +19,31 @@ mod drone;
 mod github;
 mod gitlab;
 mod google_cloud_build;
+mod harness;
 mod heroku;
 mod jenkins;
 mod jenkins_x;
+mod jetbrains_space;
 mod netlify;
+mod screwdriver;
+mod scrutinizer;
 mod semaphore;
 mod travisci;
 mod vela;
+mod vercel;
 mod woodpecker;
 
 pub use api::{CiEnvironment, CiOutput, CiProvider};
 use std::env;
 
-/// Returns true if in a CI environment by checking for the existence of the `CI` environment variable. It does not validate the variable value.
+/// Returns true if in a CI environment by checking for the existence of the `CI`
+/// environment variable. It does not validate the variable value.
 pub fn is_ci() -> bool {
-    env::var("CI").is_ok()
+    env::var("CI").is_ok_and(|v| v == "1" || v == "true")
 }
 
-/// Detects the CI provider by checking for the existence of environment variables specific to each provider. Returns `Unknown` if no provider is detected.
+/// Detects the CI provider by checking for the existence of environment variables
+/// specific to each provider. Returns `Unknown` if no provider is detected.
 pub fn detect_provider() -> CiProvider {
     if env::var("AGOLA_REPOSITORY_URL").is_ok() {
         return CiProvider::Agola;
@@ -58,7 +65,9 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::AwsCodebuild;
     }
 
-    if env::var("BUILD_BUILDID").is_ok() {
+    if env::var("BUILD_BUILDNUMBER").is_ok()
+        || env::var("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI").is_ok()
+    {
         return CiProvider::Azure;
     }
 
@@ -66,7 +75,7 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::Bamboo;
     }
 
-    if env::var("BITBUCKET_WORKSPACE").is_ok() {
+    if env::var("BITBUCKET_WORKSPACE").is_ok() || env::var("BITBUCKET_COMMIT").is_ok() {
         return CiProvider::Bitbucket;
     }
 
@@ -74,7 +83,7 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::Bitrise;
     }
 
-    if env::var("BUDDY").is_ok() {
+    if env::var("BUDDY").is_ok() || env::var("BUDDY_WORKSPACE_ID").is_ok() {
         return CiProvider::Buddy;
     }
 
@@ -90,7 +99,7 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::Cirrus;
     }
 
-    if env::var("CF_ACCOUNT").is_ok() {
+    if env::var("CF_ACCOUNT").is_ok() || env::var("CF_BUILD_ID").is_ok() {
         return CiProvider::Codefresh;
     }
 
@@ -122,8 +131,12 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::Gitlab;
     }
 
-    if env::var("GOOGLE_CLOUD_BUILD").is_ok() || env::var("BUILD_OUTPUT").is_ok() {
+    if env::var("GOOGLE_CLOUD_BUILD").is_ok() || env::var("BUILDER_OUTPUT").is_ok() {
         return CiProvider::GoogleCloudBuild;
+    }
+
+    if env::var("HARNESS_BUILD_ID").is_ok() {
+        return CiProvider::Harness;
     }
 
     if env::var("HEROKU_TEST_RUN_ID").is_ok() {
@@ -138,8 +151,20 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::JenkinsX;
     }
 
+    if env::var("JB_SPACE_EXECUTION_NUMBER").is_ok() {
+        return CiProvider::JetbrainsSpace;
+    }
+
     if env::var("NETLIFY").is_ok() {
         return CiProvider::Netlify;
+    }
+
+    if env::var("SCREWDRIVER").is_ok() {
+        return CiProvider::Screwdriver;
+    }
+
+    if env::var("SCRUTINIZER").is_ok() {
+        return CiProvider::Scrutinizer;
     }
 
     if env::var("SEMAPHORE").is_ok() {
@@ -156,6 +181,10 @@ pub fn detect_provider() -> CiProvider {
 
     if env::var("VELA").is_ok() {
         return CiProvider::Vela;
+    }
+
+    if env::var("VERCEL").is_ok() {
+        return CiProvider::Vercel;
     }
 
     CiProvider::Unknown
@@ -188,10 +217,14 @@ pub fn get_environment() -> Option<CiEnvironment> {
         CiProvider::GithubActions => github::create_environment(),
         CiProvider::Gitlab => gitlab::create_environment(),
         CiProvider::GoogleCloudBuild => google_cloud_build::create_environment(),
+        CiProvider::Harness => harness::create_environment(),
         CiProvider::Heroku => heroku::create_environment(),
         CiProvider::Jenkins => jenkins::create_environment(),
         CiProvider::JenkinsX => jenkins_x::create_environment(),
+        CiProvider::JetbrainsSpace => jetbrains_space::create_environment(),
         CiProvider::Netlify => netlify::create_environment(),
+        CiProvider::Screwdriver => screwdriver::create_environment(),
+        CiProvider::Scrutinizer => scrutinizer::create_environment(),
         CiProvider::Semaphore => semaphore::create_environment(),
         CiProvider::TeamCity => {
             // No env vars to use
@@ -199,6 +232,7 @@ pub fn get_environment() -> Option<CiEnvironment> {
         }
         CiProvider::TravisCI => travisci::create_environment(),
         CiProvider::Vela => vela::create_environment(),
+        CiProvider::Vercel => vercel::create_environment(),
         CiProvider::Woodpecker => woodpecker::create_environment(),
         CiProvider::Unknown => {
             return None;
