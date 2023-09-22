@@ -2,7 +2,7 @@
 
 ![Crates.io](https://img.shields.io/crates/v/cd_env) ![Crates.io](https://img.shields.io/crates/d/cd_env)
 
-Detects CD (continuous deploy, deliver, distribute) information from the current environment.
+Detects CD (continuous deploy, deliver, distribute) information from the current environment. Most commonly, this _only_ works as part of the deploy build step, and not the deploy run step.
 
 ### Usage
 
