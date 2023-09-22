@@ -9,7 +9,8 @@ pub fn create_environment() -> CiEnvironment {
             .unwrap_or_default(),
         id: var("BUDDY_PIPELINE_ID"),
         provider: CiProvider::Buddy,
-        request_id: opt_var("BUDDY_EXECUTION_PULL_REQUEST_NO"),
+        request_id: opt_var("BUDDY_EXECUTION_PULL_REQUEST_NO")
+            .or_else(|| opt_var("BUDDY_EXECUTION_PULL_REQUEST_ID")),
         request_url: None,
         revision: var("BUDDY_EXECUTION_REVISION"),
         url: opt_var("BUDDY_PIPELINE_URL"),

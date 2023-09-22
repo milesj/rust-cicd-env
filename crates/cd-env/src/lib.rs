@@ -2,6 +2,7 @@ mod api;
 mod aws_codedeploy;
 mod digital_ocean;
 mod fly;
+mod go_cd;
 mod google_appengine;
 mod google_cloud_run;
 mod heroku;
@@ -32,6 +33,10 @@ pub fn detect_provider() -> CdProvider {
 
     if env::var("FLY_APP_NAME").is_ok() {
         return CdProvider::Fly;
+    }
+
+    if env::var("GO_PIPELINE_NAME").is_ok() {
+        return CdProvider::GoCD;
     }
 
     if env::var("GAE_SERVICE").is_ok() {
@@ -75,6 +80,7 @@ pub fn get_environment() -> Option<CdEnvironment> {
         CdProvider::AwsCodedeploy => aws_codedeploy::create_environment(),
         CdProvider::DigitalOceanAppPlatform => digital_ocean::create_environment(),
         CdProvider::Fly => fly::create_environment(),
+        CdProvider::GoCD => go_cd::create_environment(),
         CdProvider::GoogleAppEngine => google_appengine::create_environment(),
         CdProvider::GoogleCloudRun => google_cloud_run::create_environment(),
         CdProvider::Heroku => heroku::create_environment(),
