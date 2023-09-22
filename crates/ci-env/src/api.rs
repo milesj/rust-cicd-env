@@ -24,6 +24,7 @@ pub enum CiProvider {
     GithubActions,
     Gitlab,
     GoogleCloudBuild,
+    Harness,
     Heroku,
     Jenkins,
     JenkinsX,

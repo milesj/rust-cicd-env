@@ -19,6 +19,7 @@ mod drone;
 mod github;
 mod gitlab;
 mod google_cloud_build;
+mod harness;
 mod heroku;
 mod jenkins;
 mod jenkins_x;
@@ -134,6 +135,10 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::GoogleCloudBuild;
     }
 
+    if env::var("HARNESS_BUILD_ID").is_ok() {
+        return CiProvider::Harness;
+    }
+
     if env::var("HEROKU_TEST_RUN_ID").is_ok() {
         return CiProvider::Heroku;
     }
@@ -212,6 +217,7 @@ pub fn get_environment() -> Option<CiEnvironment> {
         CiProvider::GithubActions => github::create_environment(),
         CiProvider::Gitlab => gitlab::create_environment(),
         CiProvider::GoogleCloudBuild => google_cloud_build::create_environment(),
+        CiProvider::Harness => harness::create_environment(),
         CiProvider::Heroku => heroku::create_environment(),
         CiProvider::Jenkins => jenkins::create_environment(),
         CiProvider::JenkinsX => jenkins_x::create_environment(),
