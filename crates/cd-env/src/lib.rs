@@ -7,8 +7,10 @@ mod google_appengine;
 mod google_cloud_run;
 mod harness;
 mod heroku;
+mod netlify;
 mod octopus;
 mod railway;
+mod release;
 mod render;
 mod seed;
 mod vercel;
@@ -36,7 +38,7 @@ pub fn detect_provider() -> CdProvider {
         return CdProvider::Fly;
     }
 
-    if env::var("GO_PIPELINE_NAME").is_ok() {
+    if env::var("GO_PIPELINE_NAME").is_ok() || env::var("GO_PIPELINE_LABEL").is_ok() {
         return CdProvider::GoCD;
     }
 
@@ -56,12 +58,20 @@ pub fn detect_provider() -> CdProvider {
         return CdProvider::Heroku;
     }
 
+    if env::var("NETLIFY").is_ok() {
+        return CdProvider::Netlify;
+    }
+
     if env::var("OCTOPUS_RELEASE_ID").is_ok() {
         return CdProvider::Octopus;
     }
 
     if env::var("RAILWAY_STATIC_URL").is_ok() {
         return CdProvider::Railway;
+    }
+
+    if env::var("RELEASE_BUILD_ID").is_ok() {
+        return CdProvider::Release;
     }
 
     if env::var("RENDER").is_ok() {
@@ -90,8 +100,10 @@ pub fn get_environment() -> Option<CdEnvironment> {
         CdProvider::GoogleCloudRun => google_cloud_run::create_environment(),
         CdProvider::Harness => harness::create_environment(),
         CdProvider::Heroku => heroku::create_environment(),
+        CdProvider::Netlify => netlify::create_environment(),
         CdProvider::Octopus => octopus::create_environment(),
         CdProvider::Railway => railway::create_environment(),
+        CdProvider::Release => release::create_environment(),
         CdProvider::Render => render::create_environment(),
         CdProvider::Seed => seed::create_environment(),
         CdProvider::Vercel => vercel::create_environment(),

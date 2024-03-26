@@ -21,6 +21,7 @@ pub enum CiProvider {
     Codemagic,
     Codeship,
     Drone,
+    Eas,
     GithubActions,
     Gitlab,
     GoogleCloudBuild,

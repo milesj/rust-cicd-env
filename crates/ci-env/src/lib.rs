@@ -16,6 +16,7 @@ mod codefresh;
 mod codemagic;
 mod codeship;
 mod drone;
+mod eas;
 mod github;
 mod gitlab;
 mod google_cloud_build;
@@ -28,6 +29,7 @@ mod netlify;
 mod screwdriver;
 mod scrutinizer;
 mod semaphore;
+mod teamcity;
 mod travisci;
 mod vela;
 mod vercel;
@@ -123,6 +125,10 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::Drone;
     }
 
+    if env::var("EAS_BUILD").is_ok() {
+        return CiProvider::Eas;
+    }
+
     if env::var("GITHUB_ACTIONS").is_ok() {
         return CiProvider::GithubActions;
     }
@@ -143,7 +149,7 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::Heroku;
     }
 
-    if env::var("JENKINS_URL").is_ok() {
+    if env::var("JENKINS_URL").is_ok() || env::var("BUILD_ID").is_ok() {
         return CiProvider::Jenkins;
     }
 
@@ -183,7 +189,7 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::Vela;
     }
 
-    if env::var("VERCEL").is_ok() {
+    if env::var("VERCEL").is_ok() || env::var("NOW_BUILDER").is_ok() {
         return CiProvider::Vercel;
     }
 
@@ -214,6 +220,7 @@ pub fn get_environment() -> Option<CiEnvironment> {
         CiProvider::Codemagic => codemagic::create_environment(),
         CiProvider::Codeship => codeship::create_environment(),
         CiProvider::Drone => drone::create_environment(),
+        CiProvider::Eas => eas::create_environment(),
         CiProvider::GithubActions => github::create_environment(),
         CiProvider::Gitlab => gitlab::create_environment(),
         CiProvider::GoogleCloudBuild => google_cloud_build::create_environment(),
@@ -226,10 +233,7 @@ pub fn get_environment() -> Option<CiEnvironment> {
         CiProvider::Screwdriver => screwdriver::create_environment(),
         CiProvider::Scrutinizer => scrutinizer::create_environment(),
         CiProvider::Semaphore => semaphore::create_environment(),
-        CiProvider::TeamCity => {
-            // No env vars to use
-            return None;
-        }
+        CiProvider::TeamCity => teamcity::create_environment(),
         CiProvider::TravisCI => travisci::create_environment(),
         CiProvider::Vela => vela::create_environment(),
         CiProvider::Vercel => vercel::create_environment(),
@@ -245,8 +249,11 @@ pub fn get_environment() -> Option<CiEnvironment> {
 /// Returns the output format for the current CI provider.
 pub fn get_output() -> Option<CiOutput> {
     match detect_provider() {
+        CiProvider::Azure => Some(azure::AZURE_OUTPUT),
         CiProvider::Buildkite => Some(buildkite::BUILDKITE_OUTPUT),
         CiProvider::GithubActions => Some(github::GITHUB_OUTPUT),
+        CiProvider::TeamCity => Some(teamcity::TEAMCITY_OUTPUT),
+        CiProvider::TravisCI => Some(travisci::TRAVISCI_OUTPUT),
         _ => None,
     }
 }
