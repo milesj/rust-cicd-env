@@ -34,6 +34,8 @@ mod travisci;
 mod vela;
 mod vercel;
 mod woodpecker;
+mod xcode_cloud;
+mod xcode_server;
 
 pub use api::{CiEnvironment, CiOutput, CiProvider};
 use std::env;
@@ -193,6 +195,14 @@ pub fn detect_provider() -> CiProvider {
         return CiProvider::Vercel;
     }
 
+    if env::var("CI_XCODE_PROJECT").is_ok() || env::var("CI_XCODE_CLOUD").is_ok() {
+        return CiProvider::XcodeCloud;
+    }
+
+    if env::var("XCS").is_ok() {
+        return CiProvider::XcodeServer;
+    }
+
     CiProvider::Unknown
 }
 
@@ -238,6 +248,8 @@ pub fn get_environment() -> Option<CiEnvironment> {
         CiProvider::Vela => vela::create_environment(),
         CiProvider::Vercel => vercel::create_environment(),
         CiProvider::Woodpecker => woodpecker::create_environment(),
+        CiProvider::XcodeCloud => xcode_cloud::create_environment(),
+        CiProvider::XcodeServer => xcode_server::create_environment(),
         CiProvider::Unknown => {
             return None;
         }

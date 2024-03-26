@@ -39,6 +39,8 @@ pub enum CiProvider {
     Vela,
     Vercel,
     Woodpecker,
+    XcodeCloud,
+    XcodeServer,
     #[default]
     Unknown,
 }
