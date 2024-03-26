@@ -1,4 +1,9 @@
-use crate::api::{opt_var, var, CiEnvironment, CiProvider};
+use crate::api::{opt_var, var, CiEnvironment, CiOutput, CiProvider};
+
+pub const AZURE_OUTPUT: CiOutput = CiOutput {
+    close_log_group: "##[endgroup]",
+    open_log_group: "##[group]{name}",
+};
 
 // https://learn.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml
 pub fn create_environment() -> CiEnvironment {

@@ -21,6 +21,7 @@ pub enum CiProvider {
     Codemagic,
     Codeship,
     Drone,
+    Eas,
     GithubActions,
     Gitlab,
     GoogleCloudBuild,
@@ -38,6 +39,8 @@ pub enum CiProvider {
     Vela,
     Vercel,
     Woodpecker,
+    XcodeCloud,
+    XcodeServer,
     #[default]
     Unknown,
 }

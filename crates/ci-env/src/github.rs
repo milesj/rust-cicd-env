@@ -3,7 +3,7 @@ use crate::api::{opt_var, var, CiEnvironment, CiOutput, CiProvider};
 // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#grouping-log-lines
 pub const GITHUB_OUTPUT: CiOutput = CiOutput {
     close_log_group: "::endgroup::",
-    open_log_group: "::group::",
+    open_log_group: "::group::{name}",
 };
 
 // https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables

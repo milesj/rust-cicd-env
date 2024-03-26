@@ -16,6 +16,7 @@ mod codefresh;
 mod codemagic;
 mod codeship;
 mod drone;
+mod eas;
 mod github;
 mod gitlab;
 mod google_cloud_build;
@@ -28,10 +29,13 @@ mod netlify;
 mod screwdriver;
 mod scrutinizer;
 mod semaphore;
+mod teamcity;
 mod travisci;
 mod vela;
 mod vercel;
 mod woodpecker;
+mod xcode_cloud;
+mod xcode_server;
 
 pub use api::{CiEnvironment, CiOutput, CiProvider};
 use std::env;
@@ -45,146 +49,65 @@ pub fn is_ci() -> bool {
 /// Detects the CI provider by checking for the existence of environment variables
 /// specific to each provider. Returns `Unknown` if no provider is detected.
 pub fn detect_provider() -> CiProvider {
-    if env::var("AGOLA_REPOSITORY_URL").is_ok() {
-        return CiProvider::Agola;
-    }
-
-    if env::var("APPCENTER_BUILD_ID").is_ok() {
-        return CiProvider::AppCenter;
-    }
-
-    if env::var("AC_APPCIRCLE").is_ok() {
-        return CiProvider::Appcircle;
-    }
-
-    if env::var("APPVEYOR").is_ok() {
-        return CiProvider::AppVeyor;
-    }
-
-    if env::var("CODEBUILD_BUILD_ARN").is_ok() {
-        return CiProvider::AwsCodebuild;
-    }
-
-    if env::var("BUILD_BUILDNUMBER").is_ok()
-        || env::var("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI").is_ok()
-    {
-        return CiProvider::Azure;
-    }
-
-    if env::var("bamboo_planKey").is_ok() {
-        return CiProvider::Bamboo;
-    }
-
-    if env::var("BITBUCKET_WORKSPACE").is_ok() || env::var("BITBUCKET_COMMIT").is_ok() {
-        return CiProvider::Bitbucket;
-    }
-
-    if env::var("BITRISE_IO").is_ok() {
-        return CiProvider::Bitrise;
-    }
-
-    if env::var("BUDDY").is_ok() || env::var("BUDDY_WORKSPACE_ID").is_ok() {
-        return CiProvider::Buddy;
-    }
-
-    if env::var("BUILDKITE").is_ok() {
-        return CiProvider::Buildkite;
-    }
-
-    if env::var("CIRCLECI").is_ok() {
-        return CiProvider::CircleCI;
-    }
-
-    if env::var("CIRRUS_CI").is_ok() {
-        return CiProvider::Cirrus;
-    }
-
-    if env::var("CF_ACCOUNT").is_ok() || env::var("CF_BUILD_ID").is_ok() {
-        return CiProvider::Codefresh;
-    }
-
-    if env::var("CM_BUILD_ID").is_ok() {
-        return CiProvider::Codemagic;
-    }
-
-    if let Ok(var) = env::var("CI") {
-        if var == "woodpecker" {
-            return CiProvider::Woodpecker;
+    for (key, value) in env::vars() {
+        if value.is_empty() {
+            continue;
         }
-    }
 
-    if let Ok(var) = env::var("CI_NAME") {
-        if var == "codeship" {
-            return CiProvider::Codeship;
-        }
-    }
-
-    if env::var("DRONE").is_ok() {
-        return CiProvider::Drone;
-    }
-
-    if env::var("GITHUB_ACTIONS").is_ok() {
-        return CiProvider::GithubActions;
-    }
-
-    if env::var("GITLAB_CI").is_ok() {
-        return CiProvider::Gitlab;
-    }
-
-    if env::var("GOOGLE_CLOUD_BUILD").is_ok() || env::var("BUILDER_OUTPUT").is_ok() {
-        return CiProvider::GoogleCloudBuild;
-    }
-
-    if env::var("HARNESS_BUILD_ID").is_ok() {
-        return CiProvider::Harness;
-    }
-
-    if env::var("HEROKU_TEST_RUN_ID").is_ok() {
-        return CiProvider::Heroku;
-    }
-
-    if env::var("JENKINS_URL").is_ok() {
-        return CiProvider::Jenkins;
-    }
-
-    if env::var("JENKINS_X_URL").is_ok() {
-        return CiProvider::JenkinsX;
-    }
-
-    if env::var("JB_SPACE_EXECUTION_NUMBER").is_ok() {
-        return CiProvider::JetbrainsSpace;
-    }
-
-    if env::var("NETLIFY").is_ok() {
-        return CiProvider::Netlify;
-    }
-
-    if env::var("SCREWDRIVER").is_ok() {
-        return CiProvider::Screwdriver;
-    }
-
-    if env::var("SCRUTINIZER").is_ok() {
-        return CiProvider::Scrutinizer;
-    }
-
-    if env::var("SEMAPHORE").is_ok() {
-        return CiProvider::Semaphore;
-    }
-
-    if env::var("TEAMCITY_VERSION").is_ok() {
-        return CiProvider::TeamCity;
-    }
-
-    if env::var("TRAVIS").is_ok() {
-        return CiProvider::TravisCI;
-    }
-
-    if env::var("VELA").is_ok() {
-        return CiProvider::Vela;
-    }
-
-    if env::var("VERCEL").is_ok() {
-        return CiProvider::Vercel;
+        return match key.as_str() {
+            "CI" => {
+                if value == "woodpecker" {
+                    CiProvider::Woodpecker
+                } else {
+                    continue;
+                }
+            }
+            "CI_NAME" => {
+                if value == "codeship" {
+                    CiProvider::Codeship
+                } else {
+                    continue;
+                }
+            }
+            "AC_APPCIRCLE" => CiProvider::Appcircle,
+            "AGOLA_REPOSITORY_URL" => CiProvider::Agola,
+            "APPCENTER_BUILD_ID" => CiProvider::AppCenter,
+            "APPVEYOR" => CiProvider::AppVeyor,
+            "BITBUCKET_WORKSPACE" | "BITBUCKET_COMMIT" => CiProvider::Bitbucket,
+            "BITRISE_IO" => CiProvider::Bitrise,
+            "BUDDY" | "BUDDY_WORKSPACE_ID" => CiProvider::Buddy,
+            "BUILDKITE" => CiProvider::Buildkite,
+            "BUILD_BUILDNUMBER" | "SYSTEM_TEAMFOUNDATIONCOLLECTIONURI" => CiProvider::Azure,
+            "CF_ACCOUNT" | "CF_BUILD_ID" => CiProvider::Codefresh,
+            "CIRCLECI" => CiProvider::CircleCI,
+            "CIRRUS_CI" => CiProvider::Cirrus,
+            "CI_XCODE_PROJECT" | "CI_XCODE_CLOUD" => CiProvider::XcodeCloud,
+            "CM_BUILD_ID" => CiProvider::Codemagic,
+            "CODEBUILD_BUILD_ARN" => CiProvider::AwsCodebuild,
+            "DRONE" => CiProvider::Drone,
+            "EAS_BUILD" => CiProvider::Eas,
+            "GITHUB_ACTIONS" => CiProvider::GithubActions,
+            "GITLAB_CI" => CiProvider::Gitlab,
+            "GOOGLE_CLOUD_BUILD" | "BUILDER_OUTPUT" => CiProvider::GoogleCloudBuild,
+            "HARNESS_BUILD_ID" => CiProvider::Harness,
+            "HEROKU_TEST_RUN_ID" => CiProvider::Heroku,
+            "JB_SPACE_EXECUTION_NUMBER" => CiProvider::JetbrainsSpace,
+            "JENKINS_URL" | "BUILD_ID" => CiProvider::Jenkins,
+            "JENKINS_X_URL" => CiProvider::JenkinsX,
+            "NETLIFY" => CiProvider::Netlify,
+            "SCREWDRIVER" => CiProvider::Screwdriver,
+            "SCRUTINIZER" => CiProvider::Scrutinizer,
+            "SEMAPHORE" => CiProvider::Semaphore,
+            "TEAMCITY_VERSION" => CiProvider::TeamCity,
+            "TRAVIS" => CiProvider::TravisCI,
+            "VELA" => CiProvider::Vela,
+            "VERCEL" | "NOW_BUILDER" => CiProvider::Vercel,
+            "XCS" => CiProvider::XcodeServer,
+            "bamboo_planKey" => CiProvider::Bamboo,
+            _ => {
+                continue;
+            }
+        };
     }
 
     CiProvider::Unknown
@@ -214,6 +137,7 @@ pub fn get_environment() -> Option<CiEnvironment> {
         CiProvider::Codemagic => codemagic::create_environment(),
         CiProvider::Codeship => codeship::create_environment(),
         CiProvider::Drone => drone::create_environment(),
+        CiProvider::Eas => eas::create_environment(),
         CiProvider::GithubActions => github::create_environment(),
         CiProvider::Gitlab => gitlab::create_environment(),
         CiProvider::GoogleCloudBuild => google_cloud_build::create_environment(),
@@ -226,14 +150,13 @@ pub fn get_environment() -> Option<CiEnvironment> {
         CiProvider::Screwdriver => screwdriver::create_environment(),
         CiProvider::Scrutinizer => scrutinizer::create_environment(),
         CiProvider::Semaphore => semaphore::create_environment(),
-        CiProvider::TeamCity => {
-            // No env vars to use
-            return None;
-        }
+        CiProvider::TeamCity => teamcity::create_environment(),
         CiProvider::TravisCI => travisci::create_environment(),
         CiProvider::Vela => vela::create_environment(),
         CiProvider::Vercel => vercel::create_environment(),
         CiProvider::Woodpecker => woodpecker::create_environment(),
+        CiProvider::XcodeCloud => xcode_cloud::create_environment(),
+        CiProvider::XcodeServer => xcode_server::create_environment(),
         CiProvider::Unknown => {
             return None;
         }
@@ -245,8 +168,11 @@ pub fn get_environment() -> Option<CiEnvironment> {
 /// Returns the output format for the current CI provider.
 pub fn get_output() -> Option<CiOutput> {
     match detect_provider() {
+        CiProvider::Azure => Some(azure::AZURE_OUTPUT),
         CiProvider::Buildkite => Some(buildkite::BUILDKITE_OUTPUT),
         CiProvider::GithubActions => Some(github::GITHUB_OUTPUT),
+        CiProvider::TeamCity => Some(teamcity::TEAMCITY_OUTPUT),
+        CiProvider::TravisCI => Some(travisci::TRAVISCI_OUTPUT),
         _ => None,
     }
 }

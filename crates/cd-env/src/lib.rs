@@ -7,8 +7,10 @@ mod google_appengine;
 mod google_cloud_run;
 mod harness;
 mod heroku;
+mod netlify;
 mod octopus;
 mod railway;
+mod release;
 mod render;
 mod seed;
 mod vercel;
@@ -23,57 +25,35 @@ pub fn is_cd() -> bool {
 
 /// Detects the CD provider by checking for the existence of environment variables specific to each provider. Returns `Unknown` if no provider is detected.
 pub fn detect_provider() -> CdProvider {
-    if env::var("DEPLOYMENT_GROUP_NAME").is_ok() {
-        return CdProvider::AwsCodedeploy;
+    for (key, value) in env::vars() {
+        if value.is_empty() {
+            continue;
+        }
+
+        return match key.as_str() {
+            "DEPLOYMENT_GROUP_NAME" => CdProvider::AwsCodedeploy,
+            "FLY_APP_NAME" => CdProvider::Fly,
+            "GAE_SERVICE" => CdProvider::GoogleAppEngine,
+            "GO_PIPELINE_NAME" | "GO_PIPELINE_LABEL" => CdProvider::GoCD,
+            "HARNESS_BUILD_ID" => CdProvider::Harness,
+            "HEROKU_APP_ID" | "DYNO" => CdProvider::Heroku,
+            "K_SERVICE" | "CLOUD_RUN_JOB" => CdProvider::GoogleCloudRun,
+            "NETLIFY" => CdProvider::Netlify,
+            "OCTOPUS_RELEASE_ID" => CdProvider::Octopus,
+            "RAILWAY_STATIC_URL" => CdProvider::Railway,
+            "RELEASE_BUILD_ID" => CdProvider::Release,
+            "RENDER" => CdProvider::Render,
+            "SEED_APP_NAME" => CdProvider::Seed,
+            "VERCEL" => CdProvider::Vercel,
+            _ => {
+                continue;
+            }
+        };
     }
 
     // Not sure if correct...
     if env::var("COMMIT_HASH").is_ok() && env::var("PUBLIC_URL").is_ok() {
         return CdProvider::DigitalOceanAppPlatform;
-    }
-
-    if env::var("FLY_APP_NAME").is_ok() {
-        return CdProvider::Fly;
-    }
-
-    if env::var("GO_PIPELINE_NAME").is_ok() {
-        return CdProvider::GoCD;
-    }
-
-    if env::var("GAE_SERVICE").is_ok() {
-        return CdProvider::GoogleAppEngine;
-    }
-
-    if env::var("K_SERVICE").is_ok() || env::var("CLOUD_RUN_JOB").is_ok() {
-        return CdProvider::GoogleCloudRun;
-    }
-
-    if env::var("HARNESS_BUILD_ID").is_ok() {
-        return CdProvider::Harness;
-    }
-
-    if env::var("HEROKU_APP_ID").is_ok() || env::var("DYNO").is_ok() {
-        return CdProvider::Heroku;
-    }
-
-    if env::var("OCTOPUS_RELEASE_ID").is_ok() {
-        return CdProvider::Octopus;
-    }
-
-    if env::var("RAILWAY_STATIC_URL").is_ok() {
-        return CdProvider::Railway;
-    }
-
-    if env::var("RENDER").is_ok() {
-        return CdProvider::Render;
-    }
-
-    if env::var("SEED_APP_NAME").is_ok() {
-        return CdProvider::Seed;
-    }
-
-    if env::var("VERCEL").is_ok() {
-        return CdProvider::Vercel;
     }
 
     CdProvider::Unknown
@@ -90,8 +70,10 @@ pub fn get_environment() -> Option<CdEnvironment> {
         CdProvider::GoogleCloudRun => google_cloud_run::create_environment(),
         CdProvider::Harness => harness::create_environment(),
         CdProvider::Heroku => heroku::create_environment(),
+        CdProvider::Netlify => netlify::create_environment(),
         CdProvider::Octopus => octopus::create_environment(),
         CdProvider::Railway => railway::create_environment(),
+        CdProvider::Release => release::create_environment(),
         CdProvider::Render => render::create_environment(),
         CdProvider::Seed => seed::create_environment(),
         CdProvider::Vercel => vercel::create_environment(),

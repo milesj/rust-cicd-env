@@ -1,4 +1,9 @@
-use crate::api::{opt_var, var, CiEnvironment, CiProvider};
+use crate::api::{opt_var, var, CiEnvironment, CiOutput, CiProvider};
+
+pub const TRAVISCI_OUTPUT: CiOutput = CiOutput {
+    close_log_group: "travis_fold:end:{name}",
+    open_log_group: "travis_fold:start:{name}",
+};
 
 // https://docs.travis-ci.com/user/environment-variables/#default-environment-variables
 pub fn create_environment() -> CiEnvironment {
