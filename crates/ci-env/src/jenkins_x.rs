@@ -9,11 +9,11 @@ pub fn create_environment() -> CiEnvironment {
             .or_else(|| opt_var("GIT_BRANCH"))
             .or_else(|| opt_var("BRANCH_NAME"))
             .unwrap_or_default(),
-        head_revision: None,
+        head_revision: opt_var("PR_HEAD_SHA"),
         id: var("BUILD_ID"),
         provider: CiProvider::JenkinsX,
         request_id: opt_var("PULL_NUMBER"),
-        request_url: opt_var("PR_HEAD_SHA"),
+        request_url: None,
         revision: var("PULL_PULL_SHA"),
         url: opt_var("JENKINS_X_URL"),
     }
