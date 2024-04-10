@@ -1,5 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
+// https://docs.codemagic.io/yaml-basic-configuration/environment-variables/
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: None,

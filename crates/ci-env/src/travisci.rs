@@ -22,14 +22,12 @@ pub fn create_environment() -> CiEnvironment {
         base_branch,
         base_revision: None,
         branch,
-        head_revision: None,
+        head_revision: opt_var("TRAVIS_PULL_REQUEST_SHA"),
         id: var("TRAVIS_BUILD_ID"),
         provider: CiProvider::TravisCI,
         request_id: opt_var("TRAVIS_PULL_REQUEST"),
         request_url: None,
-        revision: opt_var("TRAVIS_PULL_REQUEST_SHA")
-            .or_else(|| opt_var("TRAVIS_COMMIT"))
-            .unwrap_or_default(),
+        revision: var("TRAVIS_COMMIT"),
         url: opt_var("TRAVIS_BUILD_WEB_URL"),
     }
 }

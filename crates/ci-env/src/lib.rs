@@ -73,11 +73,13 @@ pub fn detect_provider() -> CiProvider {
             "AGOLA_REPOSITORY_URL" => CiProvider::Agola,
             "APPCENTER_BUILD_ID" => CiProvider::AppCenter,
             "APPVEYOR" => CiProvider::AppVeyor,
+            "AZURE_PIPELINES" | "BUILD_BUILDURI" | "SYSTEM_TEAMFOUNDATIONCOLLECTIONURI" => {
+                CiProvider::Azure
+            }
             "BITBUCKET_WORKSPACE" | "BITBUCKET_COMMIT" => CiProvider::Bitbucket,
             "BITRISE_IO" => CiProvider::Bitrise,
             "BUDDY" | "BUDDY_WORKSPACE_ID" => CiProvider::Buddy,
             "BUILDKITE" => CiProvider::Buildkite,
-            "BUILD_BUILDNUMBER" | "SYSTEM_TEAMFOUNDATIONCOLLECTIONURI" => CiProvider::Azure,
             "CF_ACCOUNT" | "CF_BUILD_ID" => CiProvider::Codefresh,
             "CIRCLECI" => CiProvider::CircleCI,
             "CIRRUS_CI" => CiProvider::Cirrus,

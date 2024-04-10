@@ -1,5 +1,6 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
+// https://docs.drone.io/pipeline/environment/reference/
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("DRONE_TARGET_BRANCH"),

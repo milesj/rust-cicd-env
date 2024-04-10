@@ -1,10 +1,10 @@
 use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 
-// https://circleci.com/docs/variables/#built-in-environment-variables
+// https://cirrus-ci.org/guide/writing-tasks/#environment-variables
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("CIRRUS_BASE_BRANCH"),
-        base_revision: None,
+        base_revision: opt_var("CIRRUS_BASE_SHA"),
         branch: var("CIRRUS_BRANCH"),
         head_revision: None,
         id: var("CIRRUS_BUILD_ID"),
