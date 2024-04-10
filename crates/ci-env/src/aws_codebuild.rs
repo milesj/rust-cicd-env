@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
 
     CiEnvironment {
         base_branch: opt_var("CODEBUILD_WEBHOOK_BASE_REF"),
+        base_revision: None,
         branch: opt_var("CODEBUILD_WEBHOOK_HEAD_REF")
             .or_else(|| match &trigger {
                 Some(value) => value
@@ -14,6 +15,7 @@ pub fn create_environment() -> CiEnvironment {
                 None => None,
             })
             .unwrap_or_default(),
+        head_revision: None,
         id: var("CODEBUILD_BUILD_ID"),
         provider: CiProvider::AwsCodebuild,
         request_id: match &trigger {

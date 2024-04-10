@@ -20,7 +20,9 @@ pub fn create_environment() -> CiEnvironment {
 
     CiEnvironment {
         base_branch,
+        base_revision: None,
         branch,
+        head_revision: None,
         id: var("TRAVIS_BUILD_ID"),
         provider: CiProvider::TravisCI,
         request_id: opt_var("TRAVIS_PULL_REQUEST"),

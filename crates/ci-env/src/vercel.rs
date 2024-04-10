@@ -4,7 +4,9 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: None,
+        base_revision: None,
         branch: var("VERCEL_GIT_COMMIT_REF"),
+        head_revision: None,
         id: var("VERCEL_BUILD_NUMBER"), // not real
         provider: CiProvider::Vercel,
         request_id: opt_var("VERCEL_GIT_PULL_REQUEST_ID"),

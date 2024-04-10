@@ -3,7 +3,9 @@ use crate::api::{var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: None,
+        base_revision: None,
         branch: "".into(),
+        head_revision: None,
         id: var("EAS_BUILD_ID"),
         provider: CiProvider::Eas,
         request_id: None,

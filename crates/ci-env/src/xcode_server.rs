@@ -4,7 +4,9 @@ use crate::api::{var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: None,
+        base_revision: None,
         branch: var("XCS_PRIMARY_REPO_BRANCH"),
+        head_revision: None,
         id: var("XCS_INTEGRATION_ID"),
         provider: CiProvider::XcodeServer,
         request_id: None,

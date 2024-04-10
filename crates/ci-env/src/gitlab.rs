@@ -11,7 +11,9 @@ pub fn create_environment() -> CiEnvironment {
 
     CiEnvironment {
         base_branch,
+        base_revision: None,
         branch,
+        head_revision: None,
         id: var("CI_PIPELINE_ID"),
         provider: CiProvider::Gitlab,
         request_id: opt_var("CI_MERGE_REQUEST_ID"),

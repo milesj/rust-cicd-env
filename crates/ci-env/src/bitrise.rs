@@ -4,9 +4,11 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("BITRISEIO_PULL_REQUEST_MERGE_BRANCH"),
+        base_revision: None,
         branch: opt_var("BITRISEIO_PULL_REQUEST_HEAD_BRANCH")
             .or_else(|| opt_var("BITRISE_GIT_BRANCH"))
             .unwrap_or_default(),
+        head_revision: None,
         id: var("BITRISEIO_PIPELINE_ID"),
         provider: CiProvider::Bitrise,
         request_id: opt_var("BITRISE_PULL_REQUEST"),

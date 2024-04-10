@@ -15,8 +15,10 @@ pub fn create_environment() -> CiEnvironment {
 
     CiEnvironment {
         base_branch,
+        base_revision: None,
         branch,
         id: var("APPVEYOR_BUILD_ID"),
+        head_revision: None,
         provider: CiProvider::AppVeyor,
         request_id: opt_var("APPVEYOR_PULL_REQUEST_NUMBER"),
         request_url: None,

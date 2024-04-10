@@ -10,7 +10,9 @@ pub const BUILDKITE_OUTPUT: CiOutput = CiOutput {
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("BUILDKITE_PULL_REQUEST_BASE_BRANCH"),
+        base_revision: None,
         branch: var("BUILDKITE_BRANCH"),
+        head_revision: None,
         id: var("BUILDKITE_BUILD_ID"),
         provider: CiProvider::Buildkite,
         request_id: opt_var("BUILDKITE_PULL_REQUEST"),

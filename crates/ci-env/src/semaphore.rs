@@ -15,7 +15,9 @@ pub fn create_environment() -> CiEnvironment {
 
     CiEnvironment {
         base_branch,
+        base_revision: None,
         branch,
+        head_revision: None,
         id: var("SEMAPHORE_WORKFLOW_ID"),
         provider: CiProvider::Semaphore,
         request_id: opt_var("SEMAPHORE_GIT_PR_NUMBER"),

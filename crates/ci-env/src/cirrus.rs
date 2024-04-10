@@ -4,7 +4,9 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("CIRRUS_BASE_BRANCH"),
+        base_revision: None,
         branch: var("CIRRUS_BRANCH"),
+        head_revision: None,
         id: var("CIRRUS_BUILD_ID"),
         provider: CiProvider::Cirrus,
         request_id: opt_var("CIRRUS_PR"),

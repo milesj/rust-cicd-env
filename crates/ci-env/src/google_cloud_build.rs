@@ -4,9 +4,11 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("_BASE_BRANCH"),
+        base_revision: None,
         branch: opt_var("_HEAD_BRANCH")
             .or_else(|| opt_var("BRANCH_NAME"))
             .unwrap_or_default(),
+        head_revision: None,
         id: var("BUILD_ID"),
         provider: CiProvider::GoogleCloudBuild,
         request_id: opt_var("_PR_NUMBER"),

@@ -4,7 +4,9 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("CI_PULL_REQUEST_TARGET_BRANCH"),
+        base_revision: None,
         branch: opt_var("CI_PULL_REQUEST_SOURCE_BRANCH").unwrap_or_else(|| var("CI_BRANCH")),
+        head_revision: None,
         id: var("CI_BUILD_ID"),
         provider: CiProvider::XcodeCloud,
         request_id: opt_var("CI_PULL_REQUEST_NUMBER"),

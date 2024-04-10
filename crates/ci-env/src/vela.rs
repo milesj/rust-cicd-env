@@ -4,9 +4,11 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("VELA_PULL_REQUEST_TARGET"),
+        base_revision: None,
         branch: opt_var("VELA_PULL_REQUEST_SOURCE")
             .or_else(|| opt_var("VELA_BUILD_BRANCH"))
             .unwrap_or_default(),
+        head_revision: None,
         id: var("VELA_BUILD_NUMBER"),
         provider: CiProvider::Vela,
         request_id: opt_var("VELA_PULL_REQUEST"),
