@@ -15,14 +15,14 @@ pub fn create_environment() -> CiEnvironment {
 
     CiEnvironment {
         base_branch,
+        base_revision: None,
         branch,
         id: var("APPVEYOR_BUILD_ID"),
+        head_revision: opt_var("APPVEYOR_PULL_REQUEST_HEAD_COMMIT"),
         provider: CiProvider::AppVeyor,
         request_id: opt_var("APPVEYOR_PULL_REQUEST_NUMBER"),
         request_url: None,
-        revision: opt_var("APPVEYOR_PULL_REQUEST_HEAD_COMMIT")
-            .or_else(|| opt_var("APPVEYOR_REPO_COMMIT"))
-            .unwrap_or_default(),
+        revision: var("APPVEYOR_REPO_COMMIT"),
         url: None,
     }
 }

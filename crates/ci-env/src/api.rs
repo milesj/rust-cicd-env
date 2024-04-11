@@ -58,8 +58,14 @@ pub struct CiEnvironment {
     /// Target branch of the pull/merge request.
     pub base_branch: Option<String>,
 
+    /// Target revision of the pull/merge request.
+    pub base_revision: Option<String>,
+
     /// Source branch that triggered the pipeline.
     pub branch: String,
+
+    /// Source revision of the pull/merge request.
+    pub head_revision: Option<String>,
 
     /// Unique ID of the current pipeline.
     pub id: String,

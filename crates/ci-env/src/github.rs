@@ -13,9 +13,11 @@ pub fn create_environment() -> CiEnvironment {
     // GITHUB_HEAD_SHA and GITHUB_PULL_REQUEST are non-standard
     CiEnvironment {
         base_branch: opt_var("GITHUB_BASE_REF"),
+        base_revision: None,
         branch: opt_var("GITHUB_HEAD_REF")
             .or_else(|| opt_var("GITHUB_REF_NAME"))
             .unwrap_or_default(),
+        head_revision: None,
         id: var("GITHUB_RUN_ID"),
         provider: CiProvider::GithubActions,
         request_id: opt_var("GITHUB_PULL_REQUEST").or_else(|| {

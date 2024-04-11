@@ -4,7 +4,9 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: None,
+        base_revision: None,
         branch: var("CIRCLE_BRANCH"),
+        head_revision: None,
         id: var("CIRCLE_WORKFLOW_ID"),
         provider: CiProvider::CircleCI,
         request_id: opt_var("CIRCLE_PR_NUMBER"),

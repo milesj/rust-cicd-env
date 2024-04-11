@@ -10,7 +10,9 @@ pub const TEAMCITY_OUTPUT: CiOutput = CiOutput {
 pub fn create_environment() -> CiEnvironment {
     let mut env = CiEnvironment {
         base_branch: None,
+        base_revision: None,
         branch: "".into(),
+        head_revision: None,
         id: var("BUILD_NUMBER"),
         provider: CiProvider::TeamCity,
         request_id: None,

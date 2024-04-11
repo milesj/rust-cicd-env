@@ -4,10 +4,12 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("bamboo_repository_pr_targetBranch"),
+        base_revision: None,
         branch: opt_var("bamboo_repository_pr_sourceBranch")
             .or_else(|| opt_var("bamboo_planRepository_branchName"))
             .or_else(|| opt_var("bamboo_planRepository_branch"))
             .unwrap_or_default(),
+        head_revision: None,
         id: var("bamboo_buildNumber"),
         provider: CiProvider::Bamboo,
         request_id: opt_var("bamboo_repository_pr_key"),

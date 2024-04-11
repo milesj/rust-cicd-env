@@ -4,7 +4,9 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: None,
+        base_revision: None,
         branch: var("JB_SPACE_GIT_BRANCH"),
+        head_revision: None,
         id: var("JB_SPACE_EXECUTION_NUMBER"),
         provider: CiProvider::JetbrainsSpace,
         request_id: None,

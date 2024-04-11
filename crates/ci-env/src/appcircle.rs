@@ -4,7 +4,9 @@ use crate::api::{opt_var, var, CiEnvironment, CiProvider};
 pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("AC_GIT_TARGET_BRANCH").or_else(|| opt_var("AC_GIT_BRANCH")),
+        base_revision: None,
         branch: var("AC_GIT_BRANCH"),
+        head_revision: None,
         id: var("AC_WORKFLOW_ID"),
         provider: CiProvider::Appcircle,
         request_id: opt_var("AC_PULL_NUMBER"),

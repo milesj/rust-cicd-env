@@ -10,8 +10,10 @@ pub fn create_environment() -> CiEnvironment {
         } else {
             None
         },
+        base_revision: None,
         branch: opt_var("SCRUTINIZER_PR_SOURCE_BRANCH")
             .unwrap_or_else(|| var("SCRUTINIZER_BRANCH")),
+        head_revision: None,
         id: var("SCRUTINIZER_INSPECTION_UUID"),
         provider: CiProvider::Scrutinizer,
         request_id,

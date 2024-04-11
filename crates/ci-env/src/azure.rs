@@ -10,9 +10,11 @@ pub fn create_environment() -> CiEnvironment {
     CiEnvironment {
         base_branch: opt_var("SYSTEM_PULLREQUEST_TARGETBRANCH")
             .or_else(|| opt_var("BUILD_SOURCEBRANCH")),
+        base_revision: None,
         branch: opt_var("SYSTEM_PULLREQUEST_SOURCEBRANCH")
             .or_else(|| opt_var("BUILD_SOURCEBRANCHNAME"))
             .unwrap_or_default(),
+        head_revision: opt_var("SYSTEM_PULLREQUEST_SOURCECOMMITID"),
         id: var("BUILD_BUILDNUMBER"),
         provider: CiProvider::Azure,
         request_id: opt_var("SYSTEM_PULLREQUEST_PULLREQUESTNUMBER")
