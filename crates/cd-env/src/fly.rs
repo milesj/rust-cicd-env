@@ -4,6 +4,7 @@ use crate::api::{opt_var, CdEnvironment, CdProvider};
 pub fn create_environment() -> CdEnvironment {
     CdEnvironment {
         branch: None,
+        env_prefix: Some("FLY_".into()),
         provider: CdProvider::Fly,
         revision: String::new(), // ???
         service_id: opt_var("FLY_APP_NAME"),

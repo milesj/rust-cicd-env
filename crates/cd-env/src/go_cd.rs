@@ -4,6 +4,7 @@ use crate::api::{var, CdEnvironment, CdProvider};
 pub fn create_environment() -> CdEnvironment {
     CdEnvironment {
         branch: None,
+        env_prefix: Some("GO_".into()),
         provider: CdProvider::GoCD,
         revision: var("GO_REVISION"),
         service_id: None,

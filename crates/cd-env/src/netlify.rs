@@ -4,6 +4,7 @@ use crate::api::{opt_var, var, CdEnvironment, CdProvider};
 pub fn create_environment() -> CdEnvironment {
     CdEnvironment {
         branch: opt_var("BRANCH"),
+        env_prefix: None,
         provider: CdProvider::Netlify,
         revision: var("COMMIT_REF"),
         service_id: opt_var("SITE_ID"),

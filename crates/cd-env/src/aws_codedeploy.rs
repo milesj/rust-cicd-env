@@ -4,6 +4,7 @@ use crate::api::{var, CdEnvironment, CdProvider};
 pub fn create_environment() -> CdEnvironment {
     CdEnvironment {
         branch: None,
+        env_prefix: Some("BUNDLE_".into()),
         provider: CdProvider::AwsCodedeploy,
         revision: var("BUNDLE_COMMIT"),
         service_id: None,
