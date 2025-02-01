@@ -18,6 +18,7 @@ pub fn create_environment() -> CiEnvironment {
         base_revision: None,
         branch,
         id: var("APPVEYOR_BUILD_ID"),
+        env_prefix: Some("APPVEYOR_".into()),
         head_revision: opt_var("APPVEYOR_PULL_REQUEST_HEAD_COMMIT"),
         provider: CiProvider::AppVeyor,
         request_id: opt_var("APPVEYOR_PULL_REQUEST_NUMBER"),

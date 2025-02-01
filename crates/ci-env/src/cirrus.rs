@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: opt_var("CIRRUS_BASE_BRANCH"),
         base_revision: opt_var("CIRRUS_BASE_SHA"),
         branch: var("CIRRUS_BRANCH"),
+        env_prefix: Some("CIRRUS_".into()),
         head_revision: None,
         id: var("CIRRUS_BUILD_ID"),
         provider: CiProvider::Cirrus,

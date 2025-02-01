@@ -9,6 +9,7 @@ pub fn create_environment() -> CiEnvironment {
             .or_else(|| opt_var("bamboo_planRepository_branchName"))
             .or_else(|| opt_var("bamboo_planRepository_branch"))
             .unwrap_or_default(),
+        env_prefix: Some("bamboo_".into()),
         head_revision: None,
         id: var("bamboo_buildNumber"),
         provider: CiProvider::Bamboo,

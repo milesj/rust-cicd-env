@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: var("HEROKU_TEST_RUN_BRANCH"),
+        env_prefix: Some("HEROKU_".into()),
         head_revision: None,
         id: var("HEROKU_TEST_RUN_ID"),
         provider: CiProvider::Heroku,

@@ -17,6 +17,7 @@ pub fn create_environment() -> CiEnvironment {
         branch: opt_var("GITHUB_HEAD_REF")
             .or_else(|| opt_var("GITHUB_REF_NAME"))
             .unwrap_or_default(),
+        env_prefix: Some("GITHUB_".into()),
         head_revision: None,
         id: var("GITHUB_RUN_ID"),
         provider: CiProvider::GithubActions,

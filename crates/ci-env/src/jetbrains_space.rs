@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: var("JB_SPACE_GIT_BRANCH"),
+        env_prefix: Some("JB_".into()),
         head_revision: None,
         id: var("JB_SPACE_EXECUTION_NUMBER"),
         provider: CiProvider::JetbrainsSpace,

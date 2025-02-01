@@ -8,6 +8,7 @@ pub fn create_environment() -> CiEnvironment {
         branch: opt_var("VELA_PULL_REQUEST_SOURCE")
             .or_else(|| opt_var("VELA_BUILD_BRANCH"))
             .unwrap_or_default(),
+        env_prefix: Some("VELA_".into()),
         head_revision: None,
         id: var("VELA_BUILD_NUMBER"),
         provider: CiProvider::Vela,

@@ -12,6 +12,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: "".into(),
+        env_prefix: None,
         head_revision: None,
         id: var("BUILD_NUMBER"),
         provider: CiProvider::TeamCity,

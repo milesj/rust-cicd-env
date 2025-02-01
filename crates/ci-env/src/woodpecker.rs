@@ -8,6 +8,7 @@ pub fn create_environment() -> CiEnvironment {
         branch: opt_var("CI_COMMIT_SOURCE_BRANCH")
             .or_else(|| opt_var("CI_COMMIT_BRANCH"))
             .unwrap_or_default(),
+        env_prefix: Some("CI_".into()),
         head_revision: None,
         id: var("CI_BUILD_NUMBER"),
         provider: CiProvider::Woodpecker,

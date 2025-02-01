@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: var("CIRCLE_BRANCH"),
+        env_prefix: Some("CIRCLE_".into()),
         head_revision: None,
         id: var("CIRCLE_WORKFLOW_ID"),
         provider: CiProvider::CircleCI,

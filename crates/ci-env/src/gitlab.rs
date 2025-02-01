@@ -10,6 +10,7 @@ pub fn create_environment() -> CiEnvironment {
             .or_else(|| opt_var("CI_EXTERNAL_PULL_REQUEST_SOURCE_BRANCH_NAME"))
             .or_else(|| opt_var("CI_COMMIT_BRANCH"))
             .unwrap_or_default(),
+        env_prefix: Some("CI_".into()),
         head_revision: None,
         id: var("CI_PIPELINE_ID"),
         provider: CiProvider::Gitlab,

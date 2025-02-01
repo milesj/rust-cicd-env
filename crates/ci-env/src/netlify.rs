@@ -8,6 +8,7 @@ pub fn create_environment() -> CiEnvironment {
         branch: opt_var("HEAD")
             .or_else(|| opt_var("BRANCH"))
             .unwrap_or_default(),
+        env_prefix: None,
         head_revision: None,
         id: var("BUILD_ID"),
         provider: CiProvider::Netlify,

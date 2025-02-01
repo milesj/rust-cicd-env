@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: opt_var("AC_GIT_TARGET_BRANCH").or_else(|| opt_var("AC_GIT_BRANCH")),
         base_revision: None,
         branch: var("AC_GIT_BRANCH"),
+        env_prefix: Some("AC_".into()),
         head_revision: None,
         id: var("AC_WORKFLOW_ID"),
         provider: CiProvider::Appcircle,

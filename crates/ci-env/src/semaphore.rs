@@ -17,6 +17,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch,
         base_revision: None,
         branch,
+        env_prefix: Some("SEMAPHORE_".into()),
         head_revision: None,
         id: var("SEMAPHORE_WORKFLOW_ID"),
         provider: CiProvider::Semaphore,

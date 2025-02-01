@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: var("CI_BRANCH"),
+        env_prefix: Some("CI_".into()),
         head_revision: None,
         id: var("CI_BUILD_ID"),
         provider: CiProvider::Codeship,

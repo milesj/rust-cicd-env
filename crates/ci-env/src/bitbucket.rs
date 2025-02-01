@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: opt_var("BITBUCKET_PR_DESTINATION_BRANCH"),
         base_revision: None,
         branch: var("BITBUCKET_BRANCH"),
+        env_prefix: Some("BITBUCKET_".into()),
         head_revision: None,
         id: var("BITBUCKET_PIPELINE_UUID"),
         provider: CiProvider::Bitbucket,
