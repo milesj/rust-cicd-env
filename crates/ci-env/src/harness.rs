@@ -8,6 +8,7 @@ pub fn create_environment() -> CiEnvironment {
         branch: opt_var("DRONE_SOURCE_BRANCH")
             .or_else(|| opt_var("DRONE_BRANCH"))
             .unwrap_or_default(),
+        env_prefix: Some("DRONE_".into()),
         head_revision: None,
         id: var("HARNESS_BUILD_ID"),
         provider: CiProvider::Harness,

@@ -8,6 +8,7 @@ pub fn create_environment() -> CiEnvironment {
         branch: opt_var("BUDDY_EXECUTION_PULL_REQUEST_HEAD_BRANCH")
             .or_else(|| opt_var("BUDDY_EXECUTION_BRANCH"))
             .unwrap_or_default(),
+        env_prefix: Some("BUDDY_".into()),
         head_revision: None,
         id: var("BUDDY_PIPELINE_ID"),
         provider: CiProvider::Buddy,

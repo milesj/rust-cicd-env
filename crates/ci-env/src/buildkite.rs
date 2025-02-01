@@ -12,6 +12,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: opt_var("BUILDKITE_PULL_REQUEST_BASE_BRANCH"),
         base_revision: None,
         branch: var("BUILDKITE_BRANCH"),
+        env_prefix: Some("BUILDKITE_".into()),
         head_revision: None,
         id: var("BUILDKITE_BUILD_ID"),
         provider: CiProvider::Buildkite,

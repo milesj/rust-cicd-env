@@ -8,6 +8,7 @@ pub fn create_environment() -> CiEnvironment {
         branch: opt_var("BITRISEIO_PULL_REQUEST_HEAD_BRANCH")
             .or_else(|| opt_var("BITRISE_GIT_BRANCH"))
             .unwrap_or_default(),
+        env_prefix: Some("BITRISE".into()),
         head_revision: None,
         id: var("BITRISEIO_PIPELINE_ID"),
         provider: CiProvider::Bitrise,

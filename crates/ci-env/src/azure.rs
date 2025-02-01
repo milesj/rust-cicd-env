@@ -14,6 +14,7 @@ pub fn create_environment() -> CiEnvironment {
         branch: opt_var("SYSTEM_PULLREQUEST_SOURCEBRANCH")
             .or_else(|| opt_var("BUILD_SOURCEBRANCHNAME"))
             .unwrap_or_default(),
+        env_prefix: Some("BUILD_".into()),
         head_revision: opt_var("SYSTEM_PULLREQUEST_SOURCECOMMITID"),
         id: var("BUILD_BUILDNUMBER"),
         provider: CiProvider::Azure,

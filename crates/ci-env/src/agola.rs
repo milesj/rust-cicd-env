@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: var("AGOLA_GIT_BRANCH"),
+        env_prefix: Some("AGOLA_".into()),
         head_revision: None,
         id: String::new(),
         provider: CiProvider::Agola,

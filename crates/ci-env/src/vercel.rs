@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: var("VERCEL_GIT_COMMIT_REF"),
+        env_prefix: Some("VERCEL_".into()),
         head_revision: None,
         id: var("VERCEL_BUILD_NUMBER"), // not real
         provider: CiProvider::Vercel,

@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: var("XCS_PRIMARY_REPO_BRANCH"),
+        env_prefix: Some("XCS_".into()),
         head_revision: None,
         id: var("XCS_INTEGRATION_ID"),
         provider: CiProvider::XcodeServer,

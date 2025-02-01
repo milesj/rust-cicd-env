@@ -13,6 +13,7 @@ pub fn create_environment() -> CiEnvironment {
         base_revision: None,
         branch: opt_var("SCRUTINIZER_PR_SOURCE_BRANCH")
             .unwrap_or_else(|| var("SCRUTINIZER_BRANCH")),
+        env_prefix: Some("SCRUTINIZER_".into()),
         head_revision: None,
         id: var("SCRUTINIZER_INSPECTION_UUID"),
         provider: CiProvider::Scrutinizer,

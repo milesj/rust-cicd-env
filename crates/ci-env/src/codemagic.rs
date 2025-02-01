@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: var("CM_BRANCH"),
+        env_prefix: Some("CM_".into()),
         head_revision: None,
         id: var("CM_BUILD_ID"),
         provider: CiProvider::Codemagic,

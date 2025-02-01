@@ -5,6 +5,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: None,
         base_revision: None,
         branch: "".into(),
+        env_prefix: Some("EAS_".into()),
         head_revision: None,
         id: var("EAS_BUILD_ID"),
         provider: CiProvider::Eas,

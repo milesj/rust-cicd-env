@@ -15,6 +15,7 @@ pub fn create_environment() -> CiEnvironment {
                 None => None,
             })
             .unwrap_or_default(),
+        env_prefix: Some("CODEBUILD_".into()),
         head_revision: None,
         id: var("CODEBUILD_BUILD_ID"),
         provider: CiProvider::AwsCodebuild,

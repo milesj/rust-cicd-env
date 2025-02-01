@@ -6,6 +6,7 @@ pub fn create_environment() -> CiEnvironment {
         base_branch: opt_var("CI_PULL_REQUEST_TARGET_BRANCH"),
         base_revision: opt_var("CI_PULL_REQUEST_TARGET_COMMIT"),
         branch: opt_var("CI_PULL_REQUEST_SOURCE_BRANCH").unwrap_or_else(|| var("CI_BRANCH")),
+        env_prefix: Some("CI_".into()),
         head_revision: opt_var("CI_PULL_REQUEST_SOURCE_COMMIT"),
         id: var("CI_BUILD_ID"),
         provider: CiProvider::XcodeCloud,

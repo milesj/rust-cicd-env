@@ -8,6 +8,7 @@ pub fn create_environment() -> CiEnvironment {
         branch: opt_var("GIT_BRANCH")
             .or_else(|| opt_var("BRANCH_NAME"))
             .unwrap_or_default(),
+        env_prefix: None,
         head_revision: None,
         id: var("BUILD_NUMBER"),
         provider: CiProvider::Jenkins,

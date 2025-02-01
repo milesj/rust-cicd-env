@@ -64,6 +64,9 @@ pub struct CiEnvironment {
     /// Source branch that triggered the pipeline.
     pub branch: String,
 
+    /// Prefix that all environment variables use.
+    pub env_prefix: Option<String>,
+
     /// Source revision of the pull/merge request.
     pub head_revision: Option<String>,
 
