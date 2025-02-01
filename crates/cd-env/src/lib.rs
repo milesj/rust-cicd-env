@@ -17,46 +17,51 @@ mod vercel;
 
 pub use api::*;
 use std::env;
+use std::sync::OnceLock;
 
 /// Returns true if in a CD environment by checking for the existence of a deploy provider environment variable.
 pub fn is_cd() -> bool {
     !matches!(detect_provider(), CdProvider::Unknown)
 }
 
+static PROVIDER: OnceLock<CdProvider> = OnceLock::new();
+
 /// Detects the CD provider by checking for the existence of environment variables specific to each provider. Returns `Unknown` if no provider is detected.
 pub fn detect_provider() -> CdProvider {
-    for (key, value) in env::vars() {
-        if value.is_empty() {
-            continue;
-        }
-
-        return match key.as_str() {
-            "DEPLOYMENT_GROUP_NAME" => CdProvider::AwsCodedeploy,
-            "FLY_APP_NAME" => CdProvider::Fly,
-            "GAE_SERVICE" => CdProvider::GoogleAppEngine,
-            "GO_PIPELINE_NAME" | "GO_PIPELINE_LABEL" => CdProvider::GoCD,
-            "HARNESS_BUILD_ID" => CdProvider::Harness,
-            "HEROKU_APP_ID" | "DYNO" => CdProvider::Heroku,
-            "K_SERVICE" | "CLOUD_RUN_JOB" => CdProvider::GoogleCloudRun,
-            "NETLIFY" => CdProvider::Netlify,
-            "OCTOPUS_RELEASE_ID" => CdProvider::Octopus,
-            "RAILWAY_STATIC_URL" => CdProvider::Railway,
-            "RELEASE_BUILD_ID" => CdProvider::Release,
-            "RENDER" => CdProvider::Render,
-            "SEED_APP_NAME" => CdProvider::Seed,
-            "VERCEL" => CdProvider::Vercel,
-            _ => {
+    *PROVIDER.get_or_init(|| {
+        for (key, value) in env::vars() {
+            if value.is_empty() {
                 continue;
             }
-        };
-    }
 
-    // Not sure if correct...
-    if env::var("COMMIT_HASH").is_ok() && env::var("PUBLIC_URL").is_ok() {
-        return CdProvider::DigitalOceanAppPlatform;
-    }
+            return match key.as_str() {
+                "DEPLOYMENT_GROUP_NAME" => CdProvider::AwsCodedeploy,
+                "FLY_APP_NAME" => CdProvider::Fly,
+                "GAE_SERVICE" => CdProvider::GoogleAppEngine,
+                "GO_PIPELINE_NAME" | "GO_PIPELINE_LABEL" => CdProvider::GoCD,
+                "HARNESS_BUILD_ID" => CdProvider::Harness,
+                "HEROKU_APP_ID" | "DYNO" => CdProvider::Heroku,
+                "K_SERVICE" | "CLOUD_RUN_JOB" => CdProvider::GoogleCloudRun,
+                "NETLIFY" => CdProvider::Netlify,
+                "OCTOPUS_RELEASE_ID" => CdProvider::Octopus,
+                "RAILWAY_STATIC_URL" => CdProvider::Railway,
+                "RELEASE_BUILD_ID" => CdProvider::Release,
+                "RENDER" => CdProvider::Render,
+                "SEED_APP_NAME" => CdProvider::Seed,
+                "VERCEL" => CdProvider::Vercel,
+                _ => {
+                    continue;
+                }
+            };
+        }
 
-    CdProvider::Unknown
+        // Not sure if correct...
+        if env::var("COMMIT_HASH").is_ok() && env::var("PUBLIC_URL").is_ok() {
+            return CdProvider::DigitalOceanAppPlatform;
+        }
+
+        CdProvider::Unknown
+    })
 }
 
 /// Returns metadata and information about the current deploy environment and CD provider.

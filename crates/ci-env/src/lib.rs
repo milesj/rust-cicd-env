@@ -39,6 +39,7 @@ mod xcode_server;
 
 pub use api::{CiEnvironment, CiOutput, CiProvider};
 use std::env;
+use std::sync::OnceLock;
 
 /// Returns true if in a CI environment by checking for the existence of the `CI`
 /// environment variable. It does not validate the variable value.
@@ -46,73 +47,77 @@ pub fn is_ci() -> bool {
     env::var("CI").is_ok_and(|v| v == "1" || v == "true")
 }
 
+static PROVIDER: OnceLock<CiProvider> = OnceLock::new();
+
 /// Detects the CI provider by checking for the existence of environment variables
 /// specific to each provider. Returns `Unknown` if no provider is detected.
 pub fn detect_provider() -> CiProvider {
-    for (key, value) in env::vars() {
-        if value.is_empty() {
-            continue;
-        }
-
-        return match key.as_str() {
-            "CI" => {
-                if value == "woodpecker" {
-                    CiProvider::Woodpecker
-                } else {
-                    continue;
-                }
-            }
-            "CI_NAME" => {
-                if value == "codeship" {
-                    CiProvider::Codeship
-                } else {
-                    continue;
-                }
-            }
-            "AC_APPCIRCLE" => CiProvider::Appcircle,
-            "AGOLA_REPOSITORY_URL" => CiProvider::Agola,
-            "APPCENTER_BUILD_ID" => CiProvider::AppCenter,
-            "APPVEYOR" => CiProvider::AppVeyor,
-            "AZURE_PIPELINES" | "BUILD_BUILDURI" | "SYSTEM_TEAMFOUNDATIONCOLLECTIONURI" => {
-                CiProvider::Azure
-            }
-            "BITBUCKET_WORKSPACE" | "BITBUCKET_COMMIT" => CiProvider::Bitbucket,
-            "BITRISE_IO" => CiProvider::Bitrise,
-            "BUDDY" | "BUDDY_WORKSPACE_ID" => CiProvider::Buddy,
-            "BUILDKITE" => CiProvider::Buildkite,
-            "CF_ACCOUNT" | "CF_BUILD_ID" => CiProvider::Codefresh,
-            "CIRCLECI" => CiProvider::CircleCI,
-            "CIRRUS_CI" => CiProvider::Cirrus,
-            "CI_XCODE_PROJECT" | "CI_XCODE_CLOUD" => CiProvider::XcodeCloud,
-            "CM_BUILD_ID" => CiProvider::Codemagic,
-            "CODEBUILD_BUILD_ARN" => CiProvider::AwsCodebuild,
-            "DRONE" => CiProvider::Drone,
-            "EAS_BUILD" => CiProvider::Eas,
-            "GITHUB_ACTIONS" => CiProvider::GithubActions,
-            "GITLAB_CI" => CiProvider::Gitlab,
-            "GOOGLE_CLOUD_BUILD" | "BUILDER_OUTPUT" => CiProvider::GoogleCloudBuild,
-            "HARNESS_BUILD_ID" => CiProvider::Harness,
-            "HEROKU_TEST_RUN_ID" => CiProvider::Heroku,
-            "JB_SPACE_EXECUTION_NUMBER" => CiProvider::JetbrainsSpace,
-            "JENKINS_URL" | "BUILD_ID" => CiProvider::Jenkins,
-            "JENKINS_X_URL" => CiProvider::JenkinsX,
-            "NETLIFY" => CiProvider::Netlify,
-            "SCREWDRIVER" => CiProvider::Screwdriver,
-            "SCRUTINIZER" => CiProvider::Scrutinizer,
-            "SEMAPHORE" => CiProvider::Semaphore,
-            "TEAMCITY_VERSION" => CiProvider::TeamCity,
-            "TRAVIS" => CiProvider::TravisCI,
-            "VELA" => CiProvider::Vela,
-            "VERCEL" | "NOW_BUILDER" => CiProvider::Vercel,
-            "XCS" => CiProvider::XcodeServer,
-            "bamboo_planKey" => CiProvider::Bamboo,
-            _ => {
+    *PROVIDER.get_or_init(|| {
+        for (key, value) in env::vars() {
+            if value.is_empty() {
                 continue;
             }
-        };
-    }
 
-    CiProvider::Unknown
+            return match key.as_str() {
+                "CI" => {
+                    if value == "woodpecker" {
+                        CiProvider::Woodpecker
+                    } else {
+                        continue;
+                    }
+                }
+                "CI_NAME" => {
+                    if value == "codeship" {
+                        CiProvider::Codeship
+                    } else {
+                        continue;
+                    }
+                }
+                "AC_APPCIRCLE" => CiProvider::Appcircle,
+                "AGOLA_REPOSITORY_URL" => CiProvider::Agola,
+                "APPCENTER_BUILD_ID" => CiProvider::AppCenter,
+                "APPVEYOR" => CiProvider::AppVeyor,
+                "AZURE_PIPELINES" | "BUILD_BUILDURI" | "SYSTEM_TEAMFOUNDATIONCOLLECTIONURI" => {
+                    CiProvider::Azure
+                }
+                "BITBUCKET_WORKSPACE" | "BITBUCKET_COMMIT" => CiProvider::Bitbucket,
+                "BITRISE_IO" => CiProvider::Bitrise,
+                "BUDDY" | "BUDDY_WORKSPACE_ID" => CiProvider::Buddy,
+                "BUILDKITE" => CiProvider::Buildkite,
+                "CF_ACCOUNT" | "CF_BUILD_ID" => CiProvider::Codefresh,
+                "CIRCLECI" => CiProvider::CircleCI,
+                "CIRRUS_CI" => CiProvider::Cirrus,
+                "CI_XCODE_PROJECT" | "CI_XCODE_CLOUD" => CiProvider::XcodeCloud,
+                "CM_BUILD_ID" => CiProvider::Codemagic,
+                "CODEBUILD_BUILD_ARN" => CiProvider::AwsCodebuild,
+                "DRONE" => CiProvider::Drone,
+                "EAS_BUILD" => CiProvider::Eas,
+                "GITHUB_ACTIONS" => CiProvider::GithubActions,
+                "GITLAB_CI" => CiProvider::Gitlab,
+                "GOOGLE_CLOUD_BUILD" | "BUILDER_OUTPUT" => CiProvider::GoogleCloudBuild,
+                "HARNESS_BUILD_ID" => CiProvider::Harness,
+                "HEROKU_TEST_RUN_ID" => CiProvider::Heroku,
+                "JB_SPACE_EXECUTION_NUMBER" => CiProvider::JetbrainsSpace,
+                "JENKINS_URL" | "BUILD_ID" => CiProvider::Jenkins,
+                "JENKINS_X_URL" => CiProvider::JenkinsX,
+                "NETLIFY" => CiProvider::Netlify,
+                "SCREWDRIVER" => CiProvider::Screwdriver,
+                "SCRUTINIZER" => CiProvider::Scrutinizer,
+                "SEMAPHORE" => CiProvider::Semaphore,
+                "TEAMCITY_VERSION" => CiProvider::TeamCity,
+                "TRAVIS" => CiProvider::TravisCI,
+                "VELA" => CiProvider::Vela,
+                "VERCEL" | "NOW_BUILDER" => CiProvider::Vercel,
+                "XCS" => CiProvider::XcodeServer,
+                "bamboo_planKey" | "BAMBOO_PLANKEY" => CiProvider::Bamboo,
+                _ => {
+                    continue;
+                }
+            };
+        }
+
+        CiProvider::Unknown
+    })
 }
 
 /// Returns metadata and information about the current CI environment and CI provider.
